@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Implements hook_theme().
+ *  Implements hook_theme().
+ * 
+ *  @return array of theme names.
  */
 function hello_user_theme($existing, $type, $theme, $path) {
   
