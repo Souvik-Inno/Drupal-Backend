@@ -1,0 +1,7 @@
+hello_user.listing:
+  path: '/hello-user'
+  defaults:
+    _controller: '\Drupal\hello_user\Controller\HelloUser::view'
+    _title: 'Hello User'
+  requirements:
+    _permission: 'Hello User Permission'

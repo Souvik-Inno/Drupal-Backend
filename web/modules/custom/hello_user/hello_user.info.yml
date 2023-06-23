@@ -1,0 +1,9 @@
+name: Hello User
+description: Create a routing file to create a custom Page to Display Hello [User Name]
+package: CustomModules
+
+type: module
+core_version_requirement: ^9.0 || ^10.0
+
+dependencies:
+  - drupal:views

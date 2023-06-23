@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function hello_user_theme($existing, $type, $theme, $path) {
+  
+  return [
+    'hello-user' => [
+      'variables' => [
+        'content' => '',  
+      ]
+    ]
+  ];
+}
