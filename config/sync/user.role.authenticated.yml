@@ -1,32 +1,12 @@
-uuid: 5bc0c24c-e029-497a-ae96-be4479004b9d
+uuid: ef1ab35e-45fd-4455-9c21-f07dfb0fa2bf
 langcode: en
 status: true
 dependencies:
-  config:
-    - filter.format.basic_html
   module:
-    - comment
-    - contact
-    - file
-    - filter
     - hello_user
-    - search
-    - shortcut
-    - system
-_core:
-  default_config_hash: I44QAB4es39lNzMQWiJLq2dfjX7VRSOzT_5KzAcUq_M
 id: authenticated
 label: 'Authenticated user'
-weight: 1
-is_admin: false
+weight: -9
+is_admin: null
 permissions:
   - 'Hello User Permission'
-  - 'access comments'
-  - 'access content'
-  - 'access shortcuts'
-  - 'access site-wide contact form'
-  - 'delete own files'
-  - 'post comments'
-  - 'search content'
-  - 'skip comment approval'
-  - 'use text format basic_html'
