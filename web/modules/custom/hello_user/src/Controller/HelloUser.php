@@ -1,26 +1,59 @@
 <?php
 
 namespace Drupal\hello_user\Controller;
+
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\hello_user\CurrentUser;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class HelloUser
- * extends ControllerBase and contains functionality for module.
+ * Returns responses for hello user content routes.
  */
 class HelloUser extends ControllerBase {
+  /**
+   * The current user.
+   * 
+   * @var \Drupal\hello_user\CurrentUser
+   */
+  protected $currentUser;
+  /**
+   * The content to be rendered.
+   * 
+   * @var array
+   */
+  protected $content = [];
+
+  /**
+   * Constructs new HelloUser controller object.
+   * 
+   * @param \Drupal\hello_user\CurrentUser $currentUser
+   *   The current user service.
+   */
+  public function __construct(CurrentUser $currentUser) {
+    $this->currentUser = $currentUser;
+  }
   
   /**
-   *  Function view to render content with account name with hello-user theme.
+   * {@inheritDoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('hello_user.current_user'),
+    );
+  }
+  
+  /**
+   * Renders a page to view user name.
    * 
-   *  @return array with $content.
+   * @return array
+   *   An array suitable for showing content.
    */
   public function view() {
-    $content = [];
-    $content['name'] = \Drupal::currentUser()->getAccountName();
+    $this->content['name'] = $this->currentUser->getUserDisplayName();
 
     return [
-      '#theme' => 'hello-user',
-      '#content' => $content,
+      '#theme' => 'hello_user',
+      '#content' => $this->content,
     ];
   }
 

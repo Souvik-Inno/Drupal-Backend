@@ -2,13 +2,10 @@
 
 /**
  *  Implements hook_theme().
- * 
- *  @return array of theme names.
  */
 function hello_user_theme($existing, $type, $theme, $path) {
-  
   return [
-    'hello-user' => [
+    'hello_user' => [
       'variables' => [
         'content' => '',  
       ]
