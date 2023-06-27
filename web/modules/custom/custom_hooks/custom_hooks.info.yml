@@ -1,0 +1,5 @@
+name: Custom Hooks
+description: For custom hooks and uses of hooks
+package: Custom module
+type: module
+core_version_requirement: ^9.0 || ^10.0
