@@ -1,0 +1,12 @@
+uuid: ef1ab35e-45fd-4455-9c21-f07dfb0fa2bf
+langcode: en
+status: true
+dependencies:
+  module:
+    - hello_user
+id: authenticated
+label: 'Authenticated user'
+weight: -9
+is_admin: null
+permissions:
+  - 'Hello User Permission'
