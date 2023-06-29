@@ -1,0 +1,5 @@
+services:
+  routing_system.access_checker:
+    class:  Drupal\routing_system\Access\AccessCheck
+    tags:
+      - { name: event_subscriber }
