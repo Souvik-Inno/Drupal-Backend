@@ -1,0 +1,7 @@
+form_api.form_api_config_page:
+  path: '/admin/config/form-api'
+  defaults:
+    _form: '\Drupal\form_api\Form\UserForm'
+    _title: 'Hello User - Settings'
+  requirements:
+    _permission: 'access content'

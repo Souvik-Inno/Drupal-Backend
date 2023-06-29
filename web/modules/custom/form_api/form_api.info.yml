@@ -1,0 +1,5 @@
+name: Form API
+description: For Form API and how to configure form
+package: Custom module
+type: module
+core_version_requirement: ^9.0 || ^10.0
