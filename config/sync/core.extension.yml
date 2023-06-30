@@ -14,6 +14,7 @@ module:
   config: 0
   contact: 0
   contextual: 0
+  custom_hooks: 0
   datetime: 0
   dblog: 0
   dynamic_page_cache: 0
@@ -22,6 +23,7 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  form_api: 0
   hello_user: 0
   help: 0
   history: 0
