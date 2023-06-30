@@ -36,4 +36,15 @@ class CurrentUser {
     return $this->currentUser->getDisplayName();
   }
 
+  /**
+   * Gets the cache tag for user.
+   * 
+   * @return string[]
+   *   The cache tag.
+   */
+  public function getUserCacheTags() {
+    $cacheTags = ['user:' . $this->currentUser->id()];
+    return $cacheTags;
+  }
+
 }
