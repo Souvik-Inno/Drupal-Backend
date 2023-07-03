@@ -1,0 +1,4 @@
+services:
+  routing_system.access_checker:
+    class:  Drupal\routing_system\Access\AccessCheck
+    arguments: ['@current_user']
