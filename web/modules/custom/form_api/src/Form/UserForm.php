@@ -2,11 +2,10 @@
 
 namespace Drupal\form_api\Form;
 
-use Drupal\Core\Ajax\AddCssCommand;
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\form_api\UserFormValidator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides user form for user information.
@@ -17,8 +16,36 @@ class UserForm extends FormBase {
 
   /**
    * Constant used to set or get state.
+   * 
+   * @var string
    */
   const FORM_API_CONFIG_PAGE = 'form_api_config_page:values';
+
+  /**
+   * Form validator.
+   * 
+   * @var \Drupal\form_api\UserFormValidator
+   */
+  protected $formValidator;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('form_api.user_form_validator')
+    );
+  }
+
+  /**
+   * Contructs the object of the class.
+   * 
+   * @param \Drupal\form_api\UserFormValidator $validator
+   *   Object of Validator service class to validate form.
+   */
+  public function __construct(UserFormValidator $validator) {
+    $this->formValidator = $validator;
+  }
 
   /**
    * {@inheritdoc}
@@ -115,28 +142,7 @@ class UserForm extends FormBase {
    *   The AJAX response.
    */
   public function validateUsingAjax(array &$form, FormStateInterface $form_state) {
-    $phone_number = $form_state->getValue('phone_number');
-    $email_value = $form_state->getValue('email');
-    $full_name = $form_state->getValue('full_name');
-    $email_domain = substr($email_value, -4);
-    $email_validator = \Drupal::service('email.validator')->isValid($email_value);
-    $response = new AjaxResponse();
-    $css_string = '<style>.red{color:red;}</style>'; 
-    if (!preg_match("/^[A-Za-z]+$/", $full_name)) {
-      $response->addCommand(new HtmlCommand('#full-name-result', 'Name should be text only.'));
-    }
-    if (!preg_match('/^\+91\d{10}$/', $phone_number)) {
-      $response->addCommand(new HtmlCommand('#phone-number-result', 'Only Indian phone numbers are allowed with 10 digits.'));
-    }
-    if (!$email_validator) {
-      $response->addCommand(new HtmlCommand('#email-result', 'Enter valid Email'));
-    }
-    elseif ($email_domain != '.com') {
-      $response->addCommand(new HtmlCommand('#email-result', 'Email should be of .com domain'));
-    }
-    $response->addCommand(new AddCssCommand($css_string));
-
-    return $response;
+    return $this->formValidator->validateForm($form_state);
   }
   
   /**

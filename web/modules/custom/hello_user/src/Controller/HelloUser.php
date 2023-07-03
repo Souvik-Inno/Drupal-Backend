@@ -2,7 +2,6 @@
 
 namespace Drupal\hello_user\Controller;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\hello_user\CurrentUser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,8 +50,6 @@ class HelloUser extends ControllerBase {
    */
   public function view() {
     $this->content['name'] = $this->currentUser->getUserDisplayName();
-    $var = $this->currentUser->getUserCacheTags();
-    
     return [
       '#theme' => 'hello_user',
       '#content' => $this->content,
