@@ -13,6 +13,13 @@ use Drupal\Core\Form\FormStateInterface;
 class UserFormValidator {
 
   /**
+   * Counts the number of errors in the form.
+   * 
+   * @var integer
+   */
+  protected $errorCount = 0;
+
+  /**
    * Validates the form and returns AJAX response.
    * 
    * @param \Drupal\Core\Form\FormStateInterface $form_state
@@ -25,24 +32,46 @@ class UserFormValidator {
     $phone_number = $form_state->getValue('phone_number');
     $email_value = $form_state->getValue('email');
     $full_name = $form_state->getValue('full_name');
-    $email_domain = substr($email_value, -4);
     $email_validator = \Drupal::service('email.validator')->isValid($email_value);
+    $email_providers = [
+      'gmail.com', 
+      'yahoo.com',
+      'outlook.com',
+      'hotmail.com',
+      'mail.com',
+      'zoho.com'
+    ];
+    $domain = strtolower(substr(strrchr($email_value, "@"), 1));
     $response = new AjaxResponse();
     $css_string = '<style>.red{color:red;}</style>'; 
     if (!preg_match("/^[A-Za-z]+$/", $full_name)) {
       $response->addCommand(new HtmlCommand('#full-name-result', 'Name should be text only.'));
+      $this->errorCount++;
     }
     if (!preg_match('/^\+91\d{10}$/', $phone_number)) {
       $response->addCommand(new HtmlCommand('#phone-number-result', 'Only Indian phone numbers are allowed with 10 digits.'));
+      $this->errorCount++;
     }
     if (!$email_validator) {
       $response->addCommand(new HtmlCommand('#email-result', 'Enter valid Email'));
+      $this->errorCount++;
     }
-    elseif ($email_domain != '.com') {
-      $response->addCommand(new HtmlCommand('#email-result', 'Email should be of .com domain'));
+    elseif (!in_array($domain, $email_providers)) {
+      $response->addCommand(new HtmlCommand('#email-result', 'Enter valid Email Domain'));
+      $this->errorCount++;
     }
     $response->addCommand(new AddCssCommand($css_string));
     return $response;
+  }
+
+  /**
+   * Returns the error count for the form.
+   * 
+   * @return integer
+   *   The error count.
+   */
+  public function getErrorCount() {
+    return $this->errorCount;
   }
 
 }
