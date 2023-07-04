@@ -2,7 +2,9 @@
 
 namespace Drupal\form_api\Form;
 
-use Drupal\Core\Form\FormBase;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\form_api\UserFormValidator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -12,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @internal
  */
-class UserForm extends FormBase {
+class UserForm extends ConfigFormBase {
 
   /**
    * Constant used to set or get state.
@@ -52,6 +54,10 @@ class UserForm extends FormBase {
    */
   public function getFormId() {
     return 'form_api_config_page';
+  }
+
+  public function getEditableConfigNames() {
+    return ['form_api.settings'];
   }
 
   /**
@@ -116,10 +122,10 @@ class UserForm extends FormBase {
       '#required' => TRUE,
     ];
     $form['actions'] = [
-      '#type' => 'button',
+      '#type' => 'submit',
       '#value' => $this->t('Submit'),
       '#ajax' => [
-        'callback' => '::validateUsingAjax',
+        'callback' => '::submitUsingAjax',
         'progress' => [
           'type' => 'throbber',
           'message' => NULL,
@@ -131,7 +137,7 @@ class UserForm extends FormBase {
   }
 
   /**
-   * Validates the form using AJAX.
+   * Validates the form using AJAX and submits it.
    * 
    * @param array $form
    *   An associative array containing the structure of the form.
@@ -141,17 +147,28 @@ class UserForm extends FormBase {
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   The AJAX response.
    */
-  public function validateUsingAjax(array &$form, FormStateInterface $form_state) {
-    return $this->formValidator->validateForm($form_state);
+  public function submitUsingAjax(array &$form, FormStateInterface $form_state) {
+    $result = $this->formValidator->validateForm($form_state);
+    $error_count = $this->formValidator->getErrorCount();
+    $triggering_element = $form_state->getTriggeringElement();
+    if ($error_count == 0  && $triggering_element['#type'] === 'submit') {
+      $config = $this->configFactory()->getEditable('form_api.settings');
+      $config->set('full_name', $form_state->getValue('full_name'));
+      $config->set('phone_number', $form_state->getValue('phone_number'));
+      $config->set('email', $form_state->getValue('email'));
+      $config->set('gender', $form_state->getValue('gender'));
+      $config->save();
+      $message = $this->t('Thanks! For Submitting The Form.');
+      $result->addCommand(new HtmlCommand('.contact-form-result-message', $message));
+    }
+    return $result;
   }
   
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $submitted_values = $form_state->cleanValues()->getValues();
-    \Drupal::state()->set(self::FORM_API_CONFIG_PAGE, $submitted_values);
-    \Drupal::service(id: 'messenger')->addStatus($this->t(string: 'Your form has been submitted successfully'));
+    // Left Empty as submit is done using AJAX.
   }
 
 }

@@ -2,44 +2,24 @@
 
 namespace Drupal\routing_system\Access;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Routing\RouteSubscriberBase;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Checks access for displaying page.
  */
-class AccessCheck {
+class AccessCheck extends RouteSubscriberBase {
 
   /**
-   * The current user.
+   * Alters route and sets requirements.
    * 
-   * @var \Drupal\Core\Session\AccountInterface
+   * @param \Symfony\Component\Routing\RouteCollection $collection
+   *   The collection of routes to alter.
    */
-  protected $currentUser;
-
-  /**
-   * Constructs a new AccessCheck object.
-   * 
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The current user account.
-   */
-  public function __construct(AccountInterface $account) {
-    $this->currentUser = $account;
-  }
-
-  /**
-   * A custom access check for Routing Permissions.
-   * 
-   * @return \Drupal\Core\Access\AccessResultInterface
-   *   The access result.
-   */  
-  public function access() {
-    $current_user_roles = $this->currentUser->getRoles();
-    // dump($current_user_roles);
-    if ($this->currentUser->hasPermission('Routing Permission') || array_key_exists(1, $current_user_roles)) {
-      return AccessResult::allowed();
+  protected function alterRoutes(RouteCollection $collection) {
+    if ($route = $collection->get('routing_system.content')) {
+      $route->setRequirement('_role', 'administrator');
     }
-    return AccessResult::forbidden();
   }
 
 }

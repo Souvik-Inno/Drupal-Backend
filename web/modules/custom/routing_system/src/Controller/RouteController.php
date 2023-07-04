@@ -50,13 +50,8 @@ class RouteController extends ControllerBase {
    *   Array to render page.
    */
   public function content() {
-    if ($this->checkUser->access() == AccessResult::allowed()) {
-      return [
-        '#markup' => $this->t('You have a granted access to the page'),
-      ];
-    }
     return [
-      '#markup' => $this->t('You are denied access to the page'),
+      '#markup' => $this->t('You have a granted access to the page.'),
     ];
   }
 

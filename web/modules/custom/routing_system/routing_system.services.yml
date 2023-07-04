@@ -1,4 +1,5 @@
 services:
   routing_system.access_checker:
     class:  Drupal\routing_system\Access\AccessCheck
-    arguments: ['@current_user']
+    tags:
+      - { name: event_subscriber }
