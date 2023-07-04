@@ -7,7 +7,6 @@
 
 namespace Drupal\routing_system\Controller;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\routing_system\Access\AccessCheck;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -52,6 +51,18 @@ class RouteController extends ControllerBase {
   public function content() {
     return [
       '#markup' => $this->t('You have a granted access to the page.'),
+    ];
+  }
+
+  /**
+   * Renders a markup to show the value of the parameter.
+   * 
+   * @return array
+   *   Array to render page.
+   */
+  public function dynamicContent($value) {
+    return [
+      '#markup' => $this->t('The value of the parameter is @value', ['@value' => $value]),
     ];
   }
 

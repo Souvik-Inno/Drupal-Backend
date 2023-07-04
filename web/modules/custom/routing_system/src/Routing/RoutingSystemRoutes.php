@@ -32,6 +32,16 @@ class RoutingSystemRoutes {
         '_permission' => 'Routing Permission',
       ]
     );
+    $routes['routing_system.dynamic_content'] = new Route(
+      '/campaign/value/{value}',
+      [
+        '_controller' => '\Drupal\routing_system\Controller\RouteController::dynamicContent',
+        '_title' => 'Dynamic Route',
+      ],
+      [
+        '_permission' => 'access content',
+      ]
+    );
     return $routes;
   }
 }
