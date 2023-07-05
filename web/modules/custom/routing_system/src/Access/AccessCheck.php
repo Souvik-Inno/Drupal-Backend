@@ -12,12 +12,13 @@ class AccessCheck extends RouteSubscriberBase {
 
   /**
    * Alters route and sets requirements.
-   * 
+   *
    * @param \Symfony\Component\Routing\RouteCollection $collection
    *   The collection of routes to alter.
    */
   protected function alterRoutes(RouteCollection $collection) {
     if ($route = $collection->get('routing_system.content')) {
+      $route->setPath('/changed');
       $route->setRequirement('_role', 'administrator');
     }
   }

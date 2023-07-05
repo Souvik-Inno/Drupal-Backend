@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+id: field_api.rgb_color
+field_name: field_rgb_color
+entity_type: node
+type: rgb_color
+module: field_api
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

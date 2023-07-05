@@ -1,0 +1,19 @@
+uuid: 18a4d145-2d5f-4e9f-bb84-eda39375d79f
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_api
+    - node
+id: node.field_custom_rgb_color
+field_name: field_custom_rgb_color
+entity_type: node
+type: rgb_color
+settings: {  }
+module: field_api
+locked: false
+cardinality: 2
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

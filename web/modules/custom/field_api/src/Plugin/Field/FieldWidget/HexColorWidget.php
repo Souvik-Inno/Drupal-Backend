@@ -1,0 +1,54 @@
+<?php
+
+namespace Drupal\field_api\Plugin\Field\FieldWidget;
+
+use Drupal\Component\Utility\Color;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Plugin implementation of the 'rgb_color_widget' widget.
+ *
+ * @FieldWidget(
+ *   id = "hex_color_widget",
+ *   label = @Translation("RGB Hex Color Widget"),
+ *   field_types = {
+ *     "rgb_color"
+ *   }
+ * )
+ */
+class HexColorWidget extends RGBWidget {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+    $value = $items[$delta]->value ?? '';
+    $element += [
+      '#type' => 'textfield',
+      '#default_value' => $value,
+      '#size' => 7,
+      '#maxlength' => 7,
+      '#element_validate' => [
+        [$this, 'validate'],
+      ],
+      '#access' => $this->checkAccess(),
+    ];
+    return ['value' => $element];
+  }
+
+  /**
+   * Validate the color text field.
+   */
+  public function validate($element, FormStateInterface $form_state) {
+    $value = $element['#value'];
+    if (strlen($value) === 0) {
+      $form_state->setValueForElement($element, '');
+      return;
+    }
+    if (!Color::validateHex($value)) {
+      $form_state->setError($element, $this->t('Color must be a 6-digit hexadecimal value, suitable for CSS.'));
+    }
+  }
+
+}

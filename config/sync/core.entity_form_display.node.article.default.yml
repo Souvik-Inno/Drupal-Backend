@@ -5,12 +5,14 @@ dependencies:
   config:
     - field.field.node.article.body
     - field.field.node.article.comment
+    - field.field.node.article.field_custom_rgb_color
     - field.field.node.article.field_image
     - field.field.node.article.field_tags
     - image.style.thumbnail
     - node.type.article
   module:
     - comment
+    - field_api
     - image
     - path
     - text
@@ -42,6 +44,14 @@ content:
     weight: 10
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_custom_rgb_color:
+    type: rgb_color_widget
+    weight: 121
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_image:
     type: image_image

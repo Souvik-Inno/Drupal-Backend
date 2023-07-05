@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\hello_user;
+namespace Drupal\block_api;
 
 use Drupal\Core\Session\AccountProxyInterface;
 
 /**
- * Provides a service to get current user's display name.
+ * Gets User's Role.
  */
-class CurrentUser {
+class UserRole {
 
   /**
    * The current user.
@@ -29,11 +29,12 @@ class CurrentUser {
   /**
    * Gets the current user's display name.
    *
-   * @return string
-   *   The display name.
+   * @return \Drupal\user\Entity\Role
+   *   The user's role.
    */
-  public function getUserDisplayName() {
-    return $this->currentUser->getDisplayName();
+  public function getUserRole() {
+    $roles = $this->currentUser->getRoles();
+    return $roles[array_key_last($roles)];
   }
 
   /**

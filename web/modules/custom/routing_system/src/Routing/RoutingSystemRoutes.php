@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\routing_system\Routing\RoutingSystemRoutes
- */
-
 namespace Drupal\routing_system\Routing;
 
 use Symfony\Component\Routing\Route;
@@ -16,8 +11,8 @@ class RoutingSystemRoutes {
 
   /**
    * Returns the routes with controller and permissions.
-   * 
-   * @return Route[]
+   *
+   * @return \Symfony\Component\Routing\Route[]
    *   The routes.
    */
   public function routes() {
@@ -26,11 +21,11 @@ class RoutingSystemRoutes {
       '/routing',
       [
         '_controller' => '\Drupal\routing_system\Controller\RouteController::content',
-        '_title' => 'Routes'
+        '_title' => 'Routes',
       ],
       [
         '_permission' => 'Routing Permission',
-      ]
+      ],
     );
     $routes['routing_system.dynamic_content'] = new Route(
       '/campaign/value/{value}',
@@ -40,8 +35,9 @@ class RoutingSystemRoutes {
       ],
       [
         '_permission' => 'access content',
-      ]
+      ],
     );
     return $routes;
   }
+
 }

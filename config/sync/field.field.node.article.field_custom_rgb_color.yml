@@ -1,0 +1,21 @@
+uuid: e569514d-43f5-4541-bbac-a11fcfc506d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_custom_rgb_color
+    - node.type.article
+  module:
+    - field_api
+id: node.article.field_custom_rgb_color
+field_name: field_custom_rgb_color
+entity_type: node
+bundle: article
+label: 'Custom RGB Color'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: rgb_color

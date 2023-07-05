@@ -1,5 +1,0 @@
-name: Custom Block Module
-type: module
-description: Custom module to explore drupal
-package: CustomModules
-core_version_requirement: ^9 || ^10

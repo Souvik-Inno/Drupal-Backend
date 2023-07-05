@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\routing_system\Controller\RouteController
- */
-
 namespace Drupal\routing_system\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -18,14 +13,14 @@ class RouteController extends ControllerBase {
 
   /**
    * Checks if the user has access.
-   * 
+   *
    * @var \Drupal\routing_system\Access\AccessCheck
    */
   protected $checkUser;
 
   /**
    * Creates a new AccessCheck object.
-   * 
+   *
    * @param \Drupal\routing_system\Access\AccessCheck $currentUser
    *   The current user.
    */
@@ -44,7 +39,7 @@ class RouteController extends ControllerBase {
 
   /**
    * Returns a render-able array for a page.
-   * 
+   *
    * @return array
    *   Array to render page.
    */
@@ -56,7 +51,7 @@ class RouteController extends ControllerBase {
 
   /**
    * Renders a markup to show the value of the parameter.
-   * 
+   *
    * @return array
    *   Array to render page.
    */

@@ -1,0 +1,5 @@
+name: 'Block API'
+type: module
+description: 'Create a custom block which will display “Welcome [User Role]” on the top region available'
+package: Custom module
+core_version_requirement: ^10
