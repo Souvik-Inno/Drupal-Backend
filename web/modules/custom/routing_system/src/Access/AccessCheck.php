@@ -18,6 +18,7 @@ class AccessCheck extends RouteSubscriberBase {
    */
   protected function alterRoutes(RouteCollection $collection) {
     if ($route = $collection->get('routing_system.content')) {
+      $route->setPath('/changed');
       $route->setRequirement('_role', 'administrator');
     }
   }
