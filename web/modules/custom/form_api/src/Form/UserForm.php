@@ -79,7 +79,7 @@ class UserForm extends ConfigFormBase {
     $form['full_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t(string: 'Full Name'),
-      '#description' => $this->t(string: 'Enter your full name'),
+      '#placeholder' => $this->t(string: 'Enter your full name'),
       '#required' => TRUE,
       '#default_value' => $values['full_name'] ?? '',
     ];
@@ -90,7 +90,7 @@ class UserForm extends ConfigFormBase {
     $form['phone_number'] = [
       '#type' => 'tel',
       '#title' => $this->t(string: 'Phone Number'),
-      '#description' => $this->t(string: 'Enter your phone number'),
+      '#placeholder' => $this->t(string: 'Enter your phone number'),
       '#required' => TRUE,
       '#markup' => "<div id='phone-number-result'></div>",
       '#default_value' => $values['phone_number'] ?? '',
@@ -102,7 +102,7 @@ class UserForm extends ConfigFormBase {
     $form['email'] = [
       '#type' => 'email',
       '#title' => $this->t(string: 'Email Address'),
-      '#description' => $this->t(string: 'Enter your email address'),
+      '#placeholder' => $this->t(string: 'Enter your email address'),
       '#markup' => "<div id='email-result'></div>",
       '#required' => TRUE,
     ];
@@ -119,7 +119,55 @@ class UserForm extends ConfigFormBase {
         'female' => $this->t(string: 'Female'),
         'other' => $this->t(string: 'Other'),
       ],
+      '#attributes' => [
+        'id' => 'field_gender',
+      ],
       '#required' => TRUE,
+    ];
+    $form['other_gender'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t(string: 'Enter your gender'),
+      '#size' => 60,
+      '#placeholder' => $this->t(string: 'Enter your gender'),
+      '#states' => [
+        'visible' => [
+          ':input[id="field_gender"]' => ['value' => 'other'],
+        ],
+      ],
+    ];
+    $form['occupation'] = [
+      '#type' => 'radios',
+      '#title' => $this->t(string: 'Choose your occupation'),
+      '#options' => [
+        'student' => $this->t(string: 'Student'),
+        'professional' => $this->t(string: 'Professional'),
+        'none' => $this->t(string: 'None'),
+      ],
+      '#attributes' => [
+        'id' => 'field_occupation_select',
+      ],
+      '#required' => TRUE,
+    ];
+    $form['school'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t(string: 'School Name'),
+      '#placeholder' => $this->t('Enter Your School Name'),
+      '#size' => 60,
+      '#states' => [
+        'visible' => [
+          ':input[id="field_occupation_select"]' => ['value' => 'student'],
+        ],
+      ],
+    ];
+    $form['company'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t(string: 'Company Name'),
+      '#placeholder' => $this->t('Enter Your Company Name'),
+      '#states' => [
+        'visible' => [
+          ':input[id="field_occupation_select"]' => ['value' => 'professional'],
+        ],
+      ],
     ];
     $form['actions'] = [
       '#type' => 'submit',
