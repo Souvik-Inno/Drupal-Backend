@@ -1,0 +1,7 @@
+block.settings.block_api_welcome:
+  type: block_settings
+  label: 'Welcome block'
+  mapping:
+    display:
+      type: string
+      label: Display
