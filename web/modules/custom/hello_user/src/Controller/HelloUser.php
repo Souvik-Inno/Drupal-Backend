@@ -17,12 +17,6 @@ class HelloUser extends ControllerBase {
    * @var \Drupal\hello_user\CurrentUser
    */
   protected $currentUser;
-  /**
-   * The content to be rendered.
-   * 
-   * @var array
-   */
-  protected $content = [];
 
   /**
    * Constructs new HelloUser controller object.
@@ -50,12 +44,9 @@ class HelloUser extends ControllerBase {
    *   An array suitable for showing content.
    */
   public function view() {
-    $this->content['name'] = $this->currentUser->getUserDisplayName();
-    $var = $this->currentUser->getUserCacheTags();
-    
     return [
       '#theme' => 'hello_user',
-      '#content' => $this->content,
+      '#content' => $this->currentUser->getUserDisplayName(),
       '#cache' => [
         'tags' => $this->currentUser->getUserCacheTags(),
       ],
