@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace Drupal\block_api\Plugin\Block;
 
@@ -22,24 +24,24 @@ class WelcomeBlock extends BlockBase implements ContainerFactoryPluginInterface 
 
   /**
    * The current user.
-   * 
+   *
    * @var \Drupal\block_api\UserRole
    */
   protected $user;
-  
+
   /**
    * Contructs an object of te class.
    */
   public function __construct(
-    array $configuration, 
-    $plugin_id, 
-    $plugin_definition, 
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
     protected UserRole $currentUser,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->user = $currentUser;
   }
-  
+
   /**
    * {@inheritDoc}
    */

@@ -1,8 +1,11 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace Drupal\block_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Returns responses for Block API routes.
@@ -28,7 +31,7 @@ final class BlockApiController extends ControllerBase {
 
   /**
    * Displays data on custom page.
-   * 
+   *
    * @return array
    *   Render-able array to display on custom page.
    */
@@ -40,18 +43,21 @@ final class BlockApiController extends ControllerBase {
 
   /**
    * Displays data from route with user id and status.
-   * 
+   *
    * @param int $id
    *   The user id.
    * @param int $status
    *   The status of log in.
-   * 
+   *
    * @return array
    *   Render-able array to display on the page.
    */
   public function getUserFromRoute($id, $status) {
     return [
-      '#markup' => $this->t('You have a granted access to the page @id with @status', ['@id' => $id, '@status' => $status]),
+      '#markup' => $this->t(
+        'You have a granted access to the page @id with @status',
+        ['@id' => $id, '@status' => $status],
+      ),
     ];
   }
 
@@ -59,7 +65,7 @@ final class BlockApiController extends ControllerBase {
    * Redirects the user to the custom welcome page.
    */
   public function redirectRoute() {
-    $response = new \Symfony\Component\HttpFoundation\RedirectResponse('/custom-welcome-page');
+    $response = new RedirectResponse('/custom-welcome-page');
     $response->send();
   }
 

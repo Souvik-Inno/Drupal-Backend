@@ -11,8 +11,8 @@ class BlockRoutes {
 
   /**
    * Returns the routes with controller and permissions.
-   * 
-   * @return Route[]
+   *
+   * @return \Symfony\Component\Routing\Route[]
    *   The routes.
    */
   public function routes() {
@@ -21,7 +21,7 @@ class BlockRoutes {
       '/block-api/controller',
       [
         '_controller' => '\Drupal\block_api\Controller\BlockApiController',
-        '_title' => 'Controller'
+        '_title' => 'Controller',
       ],
       [
         '_permission' => 'access content',

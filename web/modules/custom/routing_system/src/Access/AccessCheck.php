@@ -12,7 +12,7 @@ class AccessCheck extends RouteSubscriberBase {
 
   /**
    * Alters route and sets requirements.
-   * 
+   *
    * @param \Symfony\Component\Routing\RouteCollection $collection
    *   The collection of routes to alter.
    */

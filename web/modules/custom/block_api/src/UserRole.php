@@ -11,14 +11,14 @@ class UserRole {
 
   /**
    * The current user.
-   * 
+   *
    * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $currentUser;
 
   /**
    * Constructs a new CurrentUser object.
-   * 
+   *
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user service.
    */
@@ -28,7 +28,7 @@ class UserRole {
 
   /**
    * Gets the current user's display name.
-   * 
+   *
    * @return \Drupal\user\Entity\Role
    *   The user's role.
    */
@@ -39,7 +39,7 @@ class UserRole {
 
   /**
    * Gets the cache tag for user.
-   * 
+   *
    * @return string[]
    *   The cache tag.
    */
