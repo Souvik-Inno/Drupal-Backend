@@ -1,0 +1,5 @@
+name: Hello User
+description: Create a routing file to create a custom Page to Display Hello [User Name]
+package: Custom module
+type: module
+core_version_requirement: ^9.0 || ^10.0
