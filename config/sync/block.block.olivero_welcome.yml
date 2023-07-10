@@ -1,0 +1,33 @@
+uuid: d6ae478b-f4ad-4b69-8da2-be3e831ef83a
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_api
+    - system
+    - user
+  theme:
+    - olivero
+id: olivero_welcome
+theme: olivero
+region: highlighted
+weight: 0
+provider: null
+plugin: block_api_welcome
+settings:
+  id: block_api_welcome
+  label: Welcome
+  label_display: visible
+  provider: block_api
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /custom-welcome-page
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

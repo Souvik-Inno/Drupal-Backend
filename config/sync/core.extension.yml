@@ -7,6 +7,7 @@ module:
   automated_cron: 0
   big_pipe: 0
   block: 0
+  block_api: 0
   block_content: 0
   breakpoint: 0
   ckeditor5: 0
@@ -14,6 +15,7 @@ module:
   config: 0
   contact: 0
   contextual: 0
+  custom_hooks: 0
   datetime: 0
   dblog: 0
   dynamic_page_cache: 0
@@ -22,6 +24,7 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  form_api: 0
   hello_user: 0
   help: 0
   history: 0
@@ -36,6 +39,7 @@ module:
   path: 0
   path_alias: 0
   phpass: 0
+  routing_system: 0
   search: 0
   shortcut: 0
   system: 0
