@@ -2,7 +2,6 @@
 
 namespace Drupal\form_api\Form;
 
-use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -18,14 +17,14 @@ class UserForm extends ConfigFormBase {
 
   /**
    * Constant used to set or get state.
-   * 
+   *
    * @var string
    */
   const FORM_API_CONFIG_PAGE = 'form_api_config_page:values';
 
   /**
    * Form validator.
-   * 
+   *
    * @var \Drupal\form_api\UserFormValidator
    */
   protected $formValidator;
@@ -41,7 +40,7 @@ class UserForm extends ConfigFormBase {
 
   /**
    * Contructs the object of the class.
-   * 
+   *
    * @param \Drupal\form_api\UserFormValidator $validator
    *   Object of Validator service class to validate form.
    */
@@ -56,6 +55,9 @@ class UserForm extends ConfigFormBase {
     return 'form_api_config_page';
   }
 
+  /**
+   * Gets editable config file name.
+   */
   public function getEditableConfigNames() {
     return ['form_api.settings'];
   }
@@ -73,13 +75,13 @@ class UserForm extends ConfigFormBase {
    * @return array
    *   The form structure.
    */
-  public function buildForm(array $form, FormStateInterface $formState = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state = NULL) {
     $values = \Drupal::state()->get(key: self::FORM_API_CONFIG_PAGE);
     $form = [];
     $form['full_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t(string: 'Full Name'),
-      '#placeholder' => $this->t(string: 'Enter your full name'),
+      '#title' => $this->t('Full Name'),
+      '#description' => $this->t('Enter your full name'),
       '#required' => TRUE,
       '#default_value' => $values['full_name'] ?? '',
     ];
@@ -89,8 +91,8 @@ class UserForm extends ConfigFormBase {
     ];
     $form['phone_number'] = [
       '#type' => 'tel',
-      '#title' => $this->t(string: 'Phone Number'),
-      '#placeholder' => $this->t(string: 'Enter your phone number'),
+      '#title' => $this->t('Phone Number'),
+      '#description' => $this->t('Enter your phone number'),
       '#required' => TRUE,
       '#markup' => "<div id='phone-number-result'></div>",
       '#default_value' => $values['phone_number'] ?? '',
@@ -101,8 +103,8 @@ class UserForm extends ConfigFormBase {
     ];
     $form['email'] = [
       '#type' => 'email',
-      '#title' => $this->t(string: 'Email Address'),
-      '#placeholder' => $this->t(string: 'Enter your email address'),
+      '#title' => $this->t('Email Address'),
+      '#description' => $this->t('Enter your email address'),
       '#markup' => "<div id='email-result'></div>",
       '#required' => TRUE,
     ];
@@ -112,62 +114,14 @@ class UserForm extends ConfigFormBase {
     ];
     $form['gender'] = [
       '#type' => 'radios',
-      '#title' => $this->t(string: 'Gender'),
-      '#description' => $this->t(string: 'Choose your gender'),
+      '#title' => $this->t('Gender'),
+      '#description' => $this->t('Choose your gender'),
       '#options' => [
-        'male' => $this->t(string: 'Male'),
-        'female' => $this->t(string: 'Female'),
-        'other' => $this->t(string: 'Other'),
-      ],
-      '#attributes' => [
-        'id' => 'field_gender',
+        'male' => $this->t('Male'),
+        'female' => $this->t('Female'),
+        'other' => $this->t('Other'),
       ],
       '#required' => TRUE,
-    ];
-    $form['other_gender'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t(string: 'Enter your gender'),
-      '#size' => 60,
-      '#placeholder' => $this->t(string: 'Enter your gender'),
-      '#states' => [
-        'visible' => [
-          ':input[id="field_gender"]' => ['value' => 'other'],
-        ],
-      ],
-    ];
-    $form['occupation'] = [
-      '#type' => 'radios',
-      '#title' => $this->t(string: 'Choose your occupation'),
-      '#options' => [
-        'student' => $this->t(string: 'Student'),
-        'professional' => $this->t(string: 'Professional'),
-        'none' => $this->t(string: 'None'),
-      ],
-      '#attributes' => [
-        'id' => 'field_occupation_select',
-      ],
-      '#required' => TRUE,
-    ];
-    $form['school'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t(string: 'School Name'),
-      '#placeholder' => $this->t('Enter Your School Name'),
-      '#size' => 60,
-      '#states' => [
-        'visible' => [
-          ':input[id="field_occupation_select"]' => ['value' => 'student'],
-        ],
-      ],
-    ];
-    $form['company'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t(string: 'Company Name'),
-      '#placeholder' => $this->t('Enter Your Company Name'),
-      '#states' => [
-        'visible' => [
-          ':input[id="field_occupation_select"]' => ['value' => 'professional'],
-        ],
-      ],
     ];
     $form['actions'] = [
       '#type' => 'submit',
@@ -186,12 +140,12 @@ class UserForm extends ConfigFormBase {
 
   /**
    * Validates the form using AJAX and submits it.
-   * 
+   *
    * @param array $form
    *   An associative array containing the structure of the form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
-   * 
+   *
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   The AJAX response.
    */
@@ -211,7 +165,7 @@ class UserForm extends ConfigFormBase {
     }
     return $result;
   }
-  
+
   /**
    * {@inheritdoc}
    */

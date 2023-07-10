@@ -12,21 +12,21 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class HelloUser extends ControllerBase {
   /**
    * The current user.
-   * 
+   *
    * @var \Drupal\hello_user\CurrentUser
    */
   protected $currentUser;
 
   /**
    * Constructs new HelloUser controller object.
-   * 
+   *
    * @param \Drupal\hello_user\CurrentUser $currentUser
    *   The current user service.
    */
   public function __construct(CurrentUser $currentUser) {
     $this->currentUser = $currentUser;
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -35,10 +35,10 @@ class HelloUser extends ControllerBase {
       $container->get('hello_user.current_user'),
     );
   }
-  
+
   /**
    * Renders a page to view user name.
-   * 
+   *
    * @return array
    *   An array suitable for showing content.
    */

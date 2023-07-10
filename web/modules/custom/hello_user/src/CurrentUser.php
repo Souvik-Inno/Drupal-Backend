@@ -11,14 +11,14 @@ class CurrentUser {
 
   /**
    * The current user.
-   * 
+   *
    * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $currentUser;
 
   /**
    * Constructs a new CurrentUser object.
-   * 
+   *
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user service.
    */
@@ -28,7 +28,7 @@ class CurrentUser {
 
   /**
    * Gets the current user's display name.
-   * 
+   *
    * @return string
    *   The display name.
    */
@@ -38,7 +38,7 @@ class CurrentUser {
 
   /**
    * Gets the cache tag for user.
-   * 
+   *
    * @return string[]
    *   The cache tag.
    */
