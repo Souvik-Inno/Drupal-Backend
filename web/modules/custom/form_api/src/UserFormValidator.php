@@ -72,7 +72,7 @@ class UserFormValidator {
     $domain = strtolower(substr(strrchr($email_value, "@"), 1));
     $response = new AjaxResponse();
     $css_string = '<style>.red{color:red;}</style>';
-    if (!preg_match("/^[A-Za-z]+$/", $full_name)) {
+    if (!preg_match("/^[A-Z a-z]+$/", $full_name)) {
       $response->addCommand(new HtmlCommand('#full-name-result', t('Name should be text only.')));
       $this->errorCount++;
     }
