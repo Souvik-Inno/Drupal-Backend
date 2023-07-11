@@ -3,6 +3,7 @@
 namespace Drupal\form_api\Form;
 
 use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\form_api\UserFormValidator;
@@ -30,11 +31,19 @@ class UserForm extends ConfigFormBase {
   protected $formValidator;
 
   /**
+   * Gets value from config.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('form_api.user_form_validator')
+      $container->get('form_api.user_form_validator'),
+      $container->get('config.factory')
     );
   }
 
@@ -43,9 +52,12 @@ class UserForm extends ConfigFormBase {
    *
    * @param \Drupal\form_api\UserFormValidator $validator
    *   Object of Validator service class to validate form.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   Object of config factory to get and set values in form.
    */
-  public function __construct(UserFormValidator $validator) {
+  public function __construct(UserFormValidator $validator, ConfigFactoryInterface $configFactory) {
     $this->formValidator = $validator;
+    $this->configFactory = $configFactory;
   }
 
   /**
@@ -76,14 +88,14 @@ class UserForm extends ConfigFormBase {
    *   The form structure.
    */
   public function buildForm(array $form, FormStateInterface $form_state = NULL) {
-    $values = \Drupal::state()->get(key: self::FORM_API_CONFIG_PAGE);
+    $config = $this->configFactory->get('form_api.settings');
     $form = [];
     $form['full_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Full Name'),
       '#description' => $this->t('Enter your full name'),
       '#required' => TRUE,
-      '#default_value' => $values['full_name'] ?? '',
+      '#default_value' => $config->get('full_name') ?? '',
     ];
     $form['full-name-result'] = [
       '#type' => 'markup',
@@ -95,7 +107,7 @@ class UserForm extends ConfigFormBase {
       '#description' => $this->t('Enter your phone number'),
       '#required' => TRUE,
       '#markup' => "<div id='phone-number-result'></div>",
-      '#default_value' => $values['phone_number'] ?? '',
+      '#default_value' => $config->get('phone_number') ?? '',
     ];
     $form['phone-number-result'] = [
       '#type' => 'markup',
@@ -106,6 +118,7 @@ class UserForm extends ConfigFormBase {
       '#title' => $this->t('Email Address'),
       '#description' => $this->t('Enter your email address'),
       '#markup' => "<div id='email-result'></div>",
+      '#default_value' => $config->get('email') ?? '',
       '#required' => TRUE,
     ];
     $form['email-result'] = [
@@ -121,6 +134,7 @@ class UserForm extends ConfigFormBase {
         'female' => $this->t('Female'),
         'other' => $this->t('Other'),
       ],
+      '#default_value' => $config->get('gender'),
       '#required' => TRUE,
     ];
     $form['actions'] = [
