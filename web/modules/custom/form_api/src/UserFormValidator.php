@@ -6,7 +6,6 @@ use Drupal\Component\Utility\EmailValidatorInterface;
 use Drupal\Core\Ajax\AddCssCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
