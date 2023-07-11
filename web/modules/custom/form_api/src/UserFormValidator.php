@@ -73,19 +73,19 @@ class UserFormValidator {
     $response = new AjaxResponse();
     $css_string = '<style>.red{color:red;}</style>';
     if (!preg_match("/^[A-Z a-z]+$/", $full_name)) {
-      $response->addCommand(new HtmlCommand('#full-name-result', t('Name should be text only.')));
+      $response->addCommand(new HtmlCommand('#full-name-result', $this->t('Name should be text only.')));
       $this->errorCount++;
     }
     if (!preg_match('/^\+91\d{10}$/', $phone_number)) {
-      $response->addCommand(new HtmlCommand('#phone-number-result', t('Only Indian phone numbers are allowed with 10 digits.')));
+      $response->addCommand(new HtmlCommand('#phone-number-result', $this->t('Only Indian phone numbers are allowed with 10 digits.')));
       $this->errorCount++;
     }
     if (!$email_validator) {
-      $response->addCommand(new HtmlCommand('#email-result', t('Enter valid Email')));
+      $response->addCommand(new HtmlCommand('#email-result', $this->t('Enter valid Email')));
       $this->errorCount++;
     }
     elseif (!in_array($domain, $email_providers)) {
-      $response->addCommand(new HtmlCommand('#email-result', t('Enter valid Email Domain')));
+      $response->addCommand(new HtmlCommand('#email-result', $this->t('Enter valid Email Domain')));
       $this->errorCount++;
     }
     $response->addCommand(new AddCssCommand($css_string));
