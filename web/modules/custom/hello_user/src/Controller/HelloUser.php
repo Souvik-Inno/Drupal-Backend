@@ -3,7 +3,7 @@
 namespace Drupal\hello_user\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\hello_user\CurrentUser;
+use Drupal\Core\Session\AccountProxyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -13,17 +13,17 @@ class HelloUser extends ControllerBase {
   /**
    * The current user.
    *
-   * @var \Drupal\hello_user\CurrentUser
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $currentUser;
 
   /**
    * Constructs new HelloUser controller object.
    *
-   * @param \Drupal\hello_user\CurrentUser $currentUser
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user service.
    */
-  public function __construct(CurrentUser $currentUser) {
+  public function __construct(AccountProxyInterface $currentUser) {
     $this->currentUser = $currentUser;
   }
 
@@ -32,7 +32,7 @@ class HelloUser extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('hello_user.current_user'),
+      $container->get('current_user'),
     );
   }
 
@@ -45,9 +45,9 @@ class HelloUser extends ControllerBase {
   public function view() {
     return [
       '#theme' => 'hello_user',
-      '#content' => $this->currentUser->getUserDisplayName(),
+      '#content' => $this->currentUser->getDisplayName(),
       '#cache' => [
-        'tags' => $this->currentUser->getUserCacheTags(),
+        'tags' => ['user:' . $this->currentUser->id()],
       ],
     ];
   }
