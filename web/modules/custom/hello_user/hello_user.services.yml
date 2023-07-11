@@ -1,4 +1,0 @@
-services:
-  hello_user.current_user:
-    class: Drupal\hello_user\CurrentUser
-    arguments: ['@current_user']
