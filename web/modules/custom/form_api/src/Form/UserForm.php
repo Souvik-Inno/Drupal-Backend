@@ -118,7 +118,7 @@ class UserForm extends ConfigFormBase {
       '#title' => $this->t('Email Address'),
       '#description' => $this->t('Enter your email address'),
       '#markup' => "<div id='email-result'></div>",
-      '#default' => $config->get('email') ?? '',
+      '#default_value' => $config->get('email') ?? '',
       '#required' => TRUE,
     ];
     $form['email-result'] = [
@@ -134,7 +134,7 @@ class UserForm extends ConfigFormBase {
         'female' => $this->t('Female'),
         'other' => $this->t('Other'),
       ],
-      '#default' => $config->get('gender'),
+      '#default_value' => $config->get('gender'),
       '#required' => TRUE,
     ];
     $form['actions'] = [

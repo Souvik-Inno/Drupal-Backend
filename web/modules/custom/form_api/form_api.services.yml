@@ -1,4 +1,4 @@
 services:
   form_api.user_form_validator:
     class: Drupal\form_api\UserFormValidator
-    arguments: []
+    arguments: ['@email.validator']
