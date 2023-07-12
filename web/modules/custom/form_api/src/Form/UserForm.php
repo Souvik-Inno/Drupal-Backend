@@ -13,8 +13,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides user form for user information.
- *
- * @internal
  */
 class UserForm extends ConfigFormBase {
 
@@ -69,7 +67,7 @@ class UserForm extends ConfigFormBase {
   }
 
   /**
-   * Gets editable config file name.
+   * {@inheritdoc}
    */
   public function getEditableConfigNames() {
     return ['form_api.settings'];
