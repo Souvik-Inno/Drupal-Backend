@@ -76,17 +76,7 @@ class UserForm extends ConfigFormBase {
   }
 
   /**
-   * Form constructor.
-   *
-   * Display a tree of all the form elements of user form.
-   *
-   * @param array $form
-   *   An associative array containing the structure of the form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current state of the form.
-   *
-   * @return array
-   *   The form structure.
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state = NULL) {
     $config = $this->configFactory->get('form_api.settings');
