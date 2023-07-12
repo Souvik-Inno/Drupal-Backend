@@ -26,12 +26,6 @@ class UserForm extends ConfigFormBase {
   const FORM_API_CONFIG_PAGE = 'form_api_config_page:values';
 
   /**
-   * Form validator.
-   *
-   * @var \Drupal\form_api\UserFormValidator
-   */
-  protected $formValidator;
-  /**
    * Validates the email.
    *
    * @var \Drupal\Component\Utility\EmailValidatorInterface
@@ -47,14 +41,14 @@ class UserForm extends ConfigFormBase {
   /**
    * Contructs the object of the class.
    *
-   * @param \Drupal\Component\Utility\EmailValidatorInterface $emailValidator
+   * @param \Drupal\Component\Utility\EmailValidatorInterface $email_validator
    *   The email validator.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Object of config factory to get and set values in form.
    */
-  public function __construct(EmailValidatorInterface $emailValidator, ConfigFactoryInterface $configFactory) {
-    $this->emailValidator = $emailValidator;
-    $this->configFactory = $configFactory;
+  public function __construct(EmailValidatorInterface $email_validator, ConfigFactoryInterface $config_factory) {
+    $this->emailValidator = $email_validator;
+    $this->configFactory = $config_factory;
   }
 
   /**
