@@ -125,6 +125,19 @@ class UserForm extends ConfigFormBase {
       ],
       '#default_value' => $config->get('gender'),
       '#required' => TRUE,
+      '#attributes' => [
+        'id' => 'gender',
+      ],
+    ];
+    $form['other_gender'] = [
+      '#type' => 'textfield',
+      '#size' => '40',
+      '#placeholder' => 'Enter your gender',
+      '#states' => [
+        'visible' => [
+          ':input[id="gender"]' => ['value' => 'other'],
+        ],
+      ],
     ];
     $form['actions'] = [
       '#type' => 'submit',

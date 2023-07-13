@@ -1,0 +1,19 @@
+form_api.settings:
+  type: config_object
+  label: 'Form API Settings'
+  mapping:
+    full_name:
+      type: string
+      label: 'Full Name'
+    phone_number:
+      type: tel
+      label: 'Phone Number'
+    email:
+      type: email
+      label: 'Email Address'
+    gender:
+      type: radios
+      label: 'Gender'
+    other_gender:
+      type: string
+      label: 'Other Gender'
