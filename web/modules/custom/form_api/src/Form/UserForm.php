@@ -85,10 +85,7 @@ class UserForm extends ConfigFormBase {
       '#description' => $this->t('Enter your full name'),
       '#required' => TRUE,
       '#default_value' => $config->get('full_name') ?? '',
-    ];
-    $form['full-name-result'] = [
-      '#type' => 'markup',
-      '#markup' => "<div id='full-name-result' class='red'></div>",
+      '#suffix' => "<div id='full-name-result' class='red'></div>",
     ];
     $form['phone_number'] = [
       '#type' => 'tel',
@@ -97,10 +94,7 @@ class UserForm extends ConfigFormBase {
       '#required' => TRUE,
       '#markup' => "<div id='phone-number-result'></div>",
       '#default_value' => $config->get('phone_number') ?? '',
-    ];
-    $form['phone-number-result'] = [
-      '#type' => 'markup',
-      '#markup' => "<div id='phone-number-result' class='red'></div>",
+      '#suffix' => "<div id='phone-number-result' class='red'></div>",
     ];
     $form['email'] = [
       '#type' => 'email',
@@ -109,10 +103,7 @@ class UserForm extends ConfigFormBase {
       '#markup' => "<div id='email-result'></div>",
       '#default_value' => $config->get('email') ?? '',
       '#required' => TRUE,
-    ];
-    $form['email-result'] = [
-      '#type' => 'markup',
-      '#markup' => "<div id='email-result' class='red'></div>",
+      '#suffix' => "<div id='email-result' class='red'></div>",
     ];
     $form['gender'] = [
       '#type' => 'radios',
@@ -149,6 +140,7 @@ class UserForm extends ConfigFormBase {
           'message' => NULL,
         ],
       ],
+      '#suffix' => "<div id='submitted'></div>",
     ];
 
     return $form;
@@ -177,7 +169,7 @@ class UserForm extends ConfigFormBase {
       $config->set('gender', $form_state->getValue('gender'));
       $config->save();
       $message = $this->t('Thanks! For Submitting The Form.');
-      $response->addCommand(new HtmlCommand('.contact-form-result-message', $message));
+      $response->addCommand(new HtmlCommand('#submitted', $message));
     }
     else {
       $css_string = '<style>.red{color:red;}</style>';
