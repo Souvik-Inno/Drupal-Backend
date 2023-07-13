@@ -20,8 +20,7 @@
         "drupal/bootstrap": "^3.28",
         "drupal/core-composer-scaffold": "10.1.0",
         "drupal/core-project-message": "10.1.0",
-        "drupal/core-recommended": "10.1.0",
-        "drupal/mix": "^1.5"
+        "drupal/core-recommended": "10.1.0"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -94,5 +93,8 @@
                 "      composer remove drupal/core-project-message"
             ]
         }
+    },
+    "require-dev": {
+        "drush/drush": "^12.1"
     }
 }
