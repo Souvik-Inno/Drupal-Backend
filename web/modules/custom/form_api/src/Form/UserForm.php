@@ -205,10 +205,10 @@ class UserForm extends ConfigFormBase {
     $email_providers = $config->get('email_providers');
     $at_pos = strpos($email_value, '@');
     $dot_pos = strpos($email_value, '.', $at_pos + 1);
+    $provider = substr($email_value, $at_pos + 1, $dot_pos - $at_pos - 1);
     if ($at_pos === FALSE || $dot_pos === FALSE) {
       $provider = '';
     }
-    $provider = substr($email_value, $at_pos + 1, $dot_pos - $at_pos - 1);
     $error_array = [];
     if (!preg_match("/^[A-Z a-z]+$/", $full_name)) {
       $error_array['full-name-result'] = new HtmlCommand('#full-name-result', $this->t('Name should be text only.'));
@@ -222,7 +222,7 @@ class UserForm extends ConfigFormBase {
     elseif (!in_array($provider, $email_providers)) {
       $error_array['email-result'] = new HtmlCommand('#email-result', $this->t('Email should be of a valid provider.'));
     }
-    elseif (substr($email_value, -4) != '.com') {
+    elseif (substr($email_value, -4) != ".com") {
       $error_array['email-result'] = new HtmlCommand('#email-result', $this->t('Domain should be .com'));
     }
     return $error_array;

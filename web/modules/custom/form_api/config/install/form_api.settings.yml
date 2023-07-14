@@ -1,7 +1,7 @@
-full_name: 'Souvik Banerjee'
-phone_number: '+919873214560'
-email: this@gmail.com
-gender: male
+full_name:
+phone_number:
+email:
+gender:
 email_providers:
   - "gmail"
   - "yahoo"
