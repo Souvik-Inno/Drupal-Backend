@@ -201,15 +201,14 @@ class UserForm extends ConfigFormBase {
     $email_value = $form_state->getValue('email');
     $full_name = $form_state->getValue('full_name');
     $email_validator = $this->emailValidator->isValid($email_value);
-    $email_providers = [
-      'gmail.com',
-      'yahoo.com',
-      'outlook.com',
-      'hotmail.com',
-      'mail.com',
-      'zoho.com',
-    ];
-    $domain = strtolower(substr(strrchr($email_value, "@"), 1));
+    $config = $this->configFactory()->getEditable('form_api.settings');
+    $email_providers = $config->get('email_providers');
+    $at_pos = strpos($email_value, '@');
+    $dot_pos = strpos($email_value, '.', $at_pos + 1);
+    if ($at_pos === FALSE || $dot_pos === FALSE) {
+      $provider = '';
+    }
+    $provider = substr($email_value, $at_pos + 1, $dot_pos - $at_pos - 1);
     $error_array = [];
     if (!preg_match("/^[A-Z a-z]+$/", $full_name)) {
       $error_array['full-name-result'] = new HtmlCommand('#full-name-result', $this->t('Name should be text only.'));
@@ -220,8 +219,11 @@ class UserForm extends ConfigFormBase {
     if (!$email_validator) {
       $error_array['email-result'] = new HtmlCommand('#email-result', $this->t('Enter valid Email'));
     }
-    elseif (!in_array($domain, $email_providers)) {
-      $error_array['email-result'] = new HtmlCommand('#email-result', $this->t('Enter valid Email Domain'));
+    elseif (!in_array($provider, $email_providers)) {
+      $error_array['email-result'] = new HtmlCommand('#email-result', $this->t('Email should be of a valid provider.'));
+    }
+    elseif (substr($email_value, -4) != '.com') {
+      $error_array['email-result'] = new HtmlCommand('#email-result', $this->t('Domain should be .com'));
     }
     return $error_array;
   }
