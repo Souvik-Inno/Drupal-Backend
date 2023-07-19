@@ -1,4 +1,14 @@
-full_name: 'Souvik Banerjee'
-phone_number: '+919873214560'
-email: this@gmail.com
-gender: male
+_core:
+  default_config_hash: SXGYZ_LV4H1hFNagQo2cDNSIUmZgfPCglO1s5YJC5m8
+full_name: null
+phone_number: null
+email: null
+gender: null
+email_providers:
+  - gmail
+  - yahoo
+  - outlook
+  - hotmail
+  - mail
+  - zoho
+  - innoraft
