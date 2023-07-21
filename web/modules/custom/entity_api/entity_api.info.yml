@@ -1,0 +1,5 @@
+name: 'Entity api'
+type: module
+description: 'Entity API learning'
+package: 'Custom module'
+core_version_requirement: ^10

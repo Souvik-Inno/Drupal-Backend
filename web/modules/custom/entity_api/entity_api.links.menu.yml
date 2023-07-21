@@ -1,0 +1,11 @@
+entity.entity_api.settings:
+  title: 'Entity api'
+  description: 'Configure an Entity api entity type.'
+  route_name:  entity.entity_api.settings
+  parent: system.admin_structure
+
+entity.entity_api.collection:
+  title: 'Entity apis'
+  description: 'List of entity apis.'
+  route_name: entity.entity_api.collection
+  parent: system.admin_content

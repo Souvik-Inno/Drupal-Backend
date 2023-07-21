@@ -1,0 +1,5 @@
+entity_api.add_form:
+  title: 'Add entity api'
+  route_name: entity.entity_api.add_form
+  appears_on:
+    - entity.entity_api.collection
