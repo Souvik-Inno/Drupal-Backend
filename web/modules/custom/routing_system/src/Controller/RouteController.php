@@ -3,7 +3,7 @@
 namespace Drupal\routing_system\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\routing_system\Access\AccessCheck;
+use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -12,11 +12,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class RouteController extends ControllerBase {
 
   /**
-   * Checks if the user has access.
+   * The current user.
    *
    * @var \Drupal\routing_system\Access\AccessCheck
    */
-  protected $checkUser;
+  protected $currentUser;
 
   /**
    * Creates a new AccessCheck object.
@@ -24,8 +24,8 @@ class RouteController extends ControllerBase {
    * @param \Drupal\routing_system\Access\AccessCheck $currentUser
    *   The current user.
    */
-  public function __construct(AccessCheck $currentUser) {
-    $this->checkUser = $currentUser;
+  public function __construct(AccountInterface $account) {
+    $this->currentUser = $account;
   }
 
   /**
@@ -33,7 +33,7 @@ class RouteController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('routing_system.access_checker'),
+      $container->get('current_user'),
     );
   }
 
@@ -44,8 +44,13 @@ class RouteController extends ControllerBase {
    *   Array to render page.
    */
   public function content() {
+    if ($this->currentUser->hasPermission('Routing Permission')) {
+      return [
+        '#markup' => $this->t('You have a granted access to the page.'),
+      ];
+    }
     return [
-      '#markup' => $this->t('You have a granted access to the page.'),
+      '#markup' => $this->t('You dont have access to the page.'),
     ];
   }
 
