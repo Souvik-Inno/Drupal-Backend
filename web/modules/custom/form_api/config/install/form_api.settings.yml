@@ -1,0 +1,12 @@
+full_name:
+phone_number:
+email:
+gender:
+email_providers:
+  - "gmail"
+  - "yahoo"
+  - "outlook"
+  - "hotmail"
+  - "mail"
+  - "zoho"
+  - "innoraft"
