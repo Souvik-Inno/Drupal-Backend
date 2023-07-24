@@ -79,7 +79,7 @@ class MovieEntity extends ContentEntityBase implements ContentEntityInterface {
         'weight' => 1,
       ]);
 
-      $fields['movie_price'] = BaseFieldDefinition::create('field_number')
+    $fields['movie_price'] = BaseFieldDefinition::create('field_number')
       ->setLabel(t('Movie Price'))
       ->setDescription(t('The price of the movie.'))
       ->setRequired(true)
