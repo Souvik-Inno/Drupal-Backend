@@ -1,9 +1,12 @@
 uuid: 1f859ab5-6242-4732-a1a7-eb6aeb57f494
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - routing_system
 id: editor
 label: editor
 weight: -6
 is_admin: null
-permissions: {  }
+permissions:
+  - 'Routing Permission'
