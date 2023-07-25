@@ -1,3 +1,0 @@
-administer entity_api:
-  title: 'Administer entity apis'
-  restrict access: true
