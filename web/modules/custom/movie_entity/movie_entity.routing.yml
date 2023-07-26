@@ -1,0 +1,7 @@
+entity.movie_entity.collection:
+  path: '/admin/structure/movie-awards'
+  defaults:
+    _entity_list: 'movie_entity'
+    _title: 'Movie Awards'
+  requirements:
+    _permission: 'administer'
