@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Implements hook_uninstall().
+ */
+function movie_entity_uninstall($is_syncing) {
+  \Drupal::configFactory()->getEditable('field.storage.node.field_movie_price')->delete();
+  \Drupal::configFactory()->getEditable('field.storage.node.field_movie_image')->delete();
+  \Drupal::configFactory()->getEditable('node.type.movie')->delete();
+  \Drupal::configFactory()->getEditable('field.field.node.movie.field_movie_price')->delete();
+  \Drupal::configFactory()->getEditable('field.field.node.movie.field_movie_image')->delete();
+  \Drupal::configFactory()->getEditable('field.field.node.movie.body')->delete();
+  \Drupal::configFactory()->getEditable('core.entity_form_display.node.movie.default')->delete();
+  \Drupal::configFactory()->getEditable('core.entity_view_display.node.movie.teaser')->delete();
+}
