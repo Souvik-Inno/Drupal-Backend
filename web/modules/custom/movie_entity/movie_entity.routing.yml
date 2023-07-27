@@ -1,7 +1,31 @@
 entity.movie_entity.collection:
-  path: '/admin/structure/movie-awards'
+  path: '/admin/structure/movie-entity'
   defaults:
     _entity_list: 'movie_entity'
-    _title: 'Movie Awards'
+    _title: 'Movie Entity configuration'
   requirements:
-    _permission: 'administer'
+    _permission: 'administer movie_entity'
+
+entity.movie_entity.add_form:
+  path: '/admin/structure/movie_entity/add'
+  defaults:
+    _entity_form: 'movie_entity.add'
+    _title: 'Add a movie entity'
+  requirements:
+    _permission: 'administer movie_entity'
+
+entity.movie_entity.edit_form:
+  path: '/admin/structure/movie-entity/{movie_entity}'
+  defaults:
+    _entity_form: 'movie_entity.edit'
+    _title: 'Edit a movie entity'
+  requirements:
+    _permission: 'administer movie_entity'
+
+entity.movie_entity.delete_form:
+  path: '/admin/structure/movie-entity/{movie_entity}/delete'
+  defaults:
+    _entity_form: 'movie_entity.delete'
+    _title: 'Delete a movie entity'
+  requirements:
+    _permission: 'administer movie_entity'

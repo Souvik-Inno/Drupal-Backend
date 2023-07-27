@@ -1,6 +1,5 @@
-entity.movie_entity.collection:
-  route_name: entity.movie_entity.collection
-  title: 'Movie Awards'
-  description: 'Manage Award-winning Movies'
+entity.movie_entity.overview:
+  title: Movie Entities
   parent: system.admin_structure
-  weight: 50
+  description: 'List of movie entities to extend site functionality.'
+  route_name: entity.movie_entity.collection
