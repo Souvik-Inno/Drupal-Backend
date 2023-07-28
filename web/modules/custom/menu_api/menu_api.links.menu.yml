@@ -1,0 +1,6 @@
+menu_api.form:
+  title: 'Menu API Form'
+  description: 'Configure Menu API settings'
+  route_name: menu_api.config_form
+  parent: system.admin
+  weight: 6

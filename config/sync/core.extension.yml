@@ -29,6 +29,7 @@ module:
   history: 0
   image: 0
   link: 0
+  menu_api: 0
   menu_link_content: 0
   menu_ui: 0
   movie_entity: 0

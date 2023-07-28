@@ -1,0 +1,6 @@
+.toolbar-icon.toolbar-icon-menu-api-form::before {
+  background-image: url("http://custom-development.com/modules/custom/menu_api/images/movie-icon.svg");
+}
+.toolbar-icon.toolbar-icon-menu-api-form.is-active::before {
+  filter: invert(1);
+}

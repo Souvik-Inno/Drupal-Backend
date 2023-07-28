@@ -77,7 +77,7 @@ final class MovieEntityForm extends EntityForm {
 
     $form['year'] = [
       '#type' => 'number',
-      '#title' => t('Year'),
+      '#title' => $this->t('Year'),
       '#default_value' => $this->entity->get('year'),
       '#required' => TRUE,
     ];
@@ -91,6 +91,7 @@ final class MovieEntityForm extends EntityForm {
       '#selection_settings' => [
         'target_bundles' => ['movie'], 
       ],
+      // '#tags' => TRUE,
     ];
 
     return $form;
