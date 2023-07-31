@@ -91,7 +91,6 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
           $build['movie_price'] = [
             '#type' => 'markup',
             '#markup' => $output,
-            '#weight' => -1,
             '#cache' => [
               'tags' => ['movie_budget'],
             ],
