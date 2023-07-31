@@ -3,10 +3,10 @@
 namespace Drupal\menu_api\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
+use Drupal\Core\Config\ConfigCrudEvent;
 use Drupal\Core\Config\ConfigEvents;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Config\ConfigCrudEvent;
 use Drupal\node\NodeInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -64,7 +64,7 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Converts a BudgetEventSubscriber response to a Symfony response.
+   * Converts a ViewEvent response to a Symfony response.
    *
    * @param \Symfony\Component\HttpKernel\Event\ViewEvent $event
    *   The Event to process.
@@ -97,12 +97,18 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
             ],
           ];
           $controller_result = $event->getControllerResult();
-          $event->setControllerResult(array_merge($build,$controller_result));
+          $event->setControllerResult(array_merge($build, $controller_result));
         }
       }
     }
   }
 
+  /**
+   * Invalidates tag when config is saved.
+   *
+   * @param \Drupal\Core\Config\ConfigCrudEvent $event
+   *   The event to get the config data.
+   */
   public function onConfigSave(ConfigCrudEvent $event) {
     $config_name = $event->getConfig()->getName();
     if ($config_name === 'menu_api.settings' && $event->isChanged('movie_budget')) {
