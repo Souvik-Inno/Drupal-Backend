@@ -2,8 +2,12 @@
 
 namespace Drupal\menu_api\EventSubscriber;
 
+use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
+use Drupal\Core\Config\ConfigEvents;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Config\ConfigCrudEvent;
+use Drupal\node\NodeInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -28,23 +32,34 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
+   * Invalidates required tags.
+   *
+   * @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface
+   */
+  protected $invalidator;
+
+  /**
    * Contructs the object of the class.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Object of config factory to get and set values in form.
    * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match
    *   Object of Route Match Interface to get the current route match.
+   * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $invalidator
+   *   Object of Cache Tags Invalidator to invalidate required tags.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, RouteMatchInterface $current_route_match) {
+  public function __construct(ConfigFactoryInterface $config_factory, RouteMatchInterface $current_route_match, CacheTagsInvalidatorInterface $invalidator) {
     $this->configFactory = $config_factory;
     $this->routeMatch = $current_route_match;
+    $this->invalidator = $invalidator;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    $events[KernelEvents::VIEW][] = ['onResponse', 10];
+    $events[KernelEvents::VIEW][] = ['onResponse', 100];
+    $events[ConfigEvents::SAVE][] = ['onConfigSave', 110];
     return $events;
   }
 
@@ -58,7 +73,7 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
     $route_name = $this->routeMatch->getRouteName();
     if ($route_name === 'entity.node.canonical') {
       $node = $this->routeMatch->getParameter('node');
-      if ($node instanceof \Drupal\node\NodeInterface) {
+      if ($node instanceof NodeInterface) {
         $bundle = $node->getType();
         $config = $this->configFactory->get('menu_api.settings');
         if ($bundle === 'movie') {
@@ -73,9 +88,26 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
           else {
             $output = '<h3>The movie is within Budget</h3>';
           }
-          $node->body->value = $output . $node->body->value;
+          $build['movie_price'] = [
+            '#type' => 'markup',
+            '#markup' => $output,
+            '#weight' => -1,
+            '#cache' => [
+              'tags' => ['movie_budget'],
+            ],
+          ];
+          $controller_result = $event->getControllerResult();
+          $event->setControllerResult(array_merge($build,$controller_result));
         }
       }
     }
   }
+
+  public function onConfigSave(ConfigCrudEvent $event) {
+    $config_name = $event->getConfig()->getName();
+    if ($config_name === 'menu_api.settings' && $event->isChanged('movie_budget')) {
+      $this->invalidator->invalidateTags(['movie_budget']);
+    }
+  }
+
 }

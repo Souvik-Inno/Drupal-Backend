@@ -89,7 +89,7 @@ final class MovieEntityForm extends EntityForm {
       '#default_value' => $this->entity->get('movie') ? $this->entityManager->getStorage('node')->load($this->entity->get('movie')) : "",
       '#required' => TRUE,
       '#selection_settings' => [
-        'target_bundles' => ['movie'], 
+        'target_bundles' => ['movie'],
       ],
       // '#tags' => TRUE,
     ];

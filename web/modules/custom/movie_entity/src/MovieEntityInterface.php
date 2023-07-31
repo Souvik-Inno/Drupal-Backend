@@ -27,7 +27,7 @@ interface MovieEntityInterface extends ConfigEntityInterface {
 
   /**
    * Gets the referenced movie.
-   * 
+   *
    * @return string
    *   The movie referenced.
    */
@@ -35,7 +35,7 @@ interface MovieEntityInterface extends ConfigEntityInterface {
 
   /**
    * Sets the referenced movie.
-   * 
+   *
    * @param string $movie
    *   The movie referenced.
    */

@@ -37,7 +37,7 @@ class MenuApiConfigForm extends ConfigFormBase {
       $container->get('config.factory')
     );
   }
-  
+
   /**
    * {@inheritdoc}
    */

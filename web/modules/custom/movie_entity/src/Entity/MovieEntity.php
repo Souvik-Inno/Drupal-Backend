@@ -80,7 +80,7 @@ final class MovieEntity extends ConfigEntityBase implements MovieEntityInterface
 
   /**
    * The referenced movie.
-   * 
+   *
    * @var string
    */
   protected $movie;
