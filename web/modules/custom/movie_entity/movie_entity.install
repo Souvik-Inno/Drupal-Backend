@@ -4,6 +4,14 @@
  * Implements hook_uninstall().
  */
 function movie_entity_uninstall($is_syncing) {
+  $query = \Drupal::entityQuery('node')
+  ->condition('type', 'movie')
+  ->count();
+  $query->accessCheck(FALSE);
+  $node_count = $query->execute();
+  if ($node_count > 0) {
+    throw new \Drupal\Core\Extension\ModuleUninstallValidatorException(t('You cannot uninstall this module because there are nodes of the movie content type.'));
+  }
   \Drupal::configFactory()->getEditable('field.storage.node.field_movie_price')->delete();
   \Drupal::configFactory()->getEditable('field.storage.node.field_movie_image')->delete();
   \Drupal::configFactory()->getEditable('node.type.movie')->delete();
