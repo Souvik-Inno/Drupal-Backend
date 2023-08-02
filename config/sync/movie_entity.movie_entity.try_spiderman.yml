@@ -1,0 +1,9 @@
+uuid: fb2a17eb-2c6a-4dfa-8fcc-a154f5c53151
+langcode: en
+status: true
+dependencies: {  }
+id: try_spiderman
+label: 'try spiderman'
+description: 'Trying to save all the fields.'
+year: '2023'
+movie: '18'

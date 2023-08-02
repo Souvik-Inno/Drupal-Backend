@@ -7,31 +7,31 @@ use Drupal\node\NodeInterface;
 /**
  * Implements hook_custom_hooks_count_incremented().
  */
-function custom_hooks_custom_hooks_count_incremented($current_count, NodeInterface $node) {
-  if($current_count === 1) {
-    \Drupal::messenger()->addMessage(t('Thank you for viewing the %title for the first time', ['%title' => $node->label()]));
-  }
-}
+// function custom_hooks_custom_hooks_count_incremented($current_count, NodeInterface $node) {
+//   if($current_count === 1) {
+//     \Drupal::messenger()->addMessage(t('Thank you for viewing the %title for the first time', ['%title' => $node->label()]));
+//   }
+// }
 
 /**
  * Implements hook_ENTITY_TYPE_view()
  */
-function custom_hooks_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  $session = \Drupal::request()->getSession();
-  $current_counts = $session->get('custom_hooks.view_counts', []);
-  if (!isset($current_counts[$entity->id()])) {
-    $current_counts[$entity->id()] = 1;
-  }
-  else {
-    $current_counts[$entity->id()]++;
-  }
-  $session->set('custom_hooks.view_counts', $current_counts);
-  $module_handler = \Drupal::moduleHandler();
-  $module_handler->invokeAll('custom_hooks_count_incremented', [$current_counts[$entity->id()], $entity]);
-  $build['view_count'] = [
-    '#markup' => '<p>' . t('You have viewed this node @total times this session.', array('@total' => $current_counts[$entity->id()])) . '</p>',
-    '#cache' => array(
-      'max-age' => 0,
-    ),
-  ];
-}
+// function custom_hooks_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+//   $session = \Drupal::request()->getSession();
+//   $current_counts = $session->get('custom_hooks.view_counts', []);
+//   if (!isset($current_counts[$entity->id()])) {
+//     $current_counts[$entity->id()] = 1;
+//   }
+//   else {
+//     $current_counts[$entity->id()]++;
+//   }
+//   $session->set('custom_hooks.view_counts', $current_counts);
+//   $module_handler = \Drupal::moduleHandler();
+//   $module_handler->invokeAll('custom_hooks_count_incremented', [$current_counts[$entity->id()], $entity]);
+//   $build['view_count'] = [
+//     '#markup' => '<p>' . t('You have viewed this node @total times this session.', array('@total' => $current_counts[$entity->id()])) . '</p>',
+//     '#cache' => array(
+//       'max-age' => 0,
+//     ),
+//   ];
+// }

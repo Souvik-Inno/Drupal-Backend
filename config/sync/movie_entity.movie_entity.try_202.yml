@@ -1,0 +1,9 @@
+uuid: 44f277fe-3eed-4d22-9f55-fa170bedcd79
+langcode: en
+status: true
+dependencies: {  }
+id: try_202
+label: 'TRY 202'
+description: 'Trying full fields'
+year: '2023'
+movie: '18'
