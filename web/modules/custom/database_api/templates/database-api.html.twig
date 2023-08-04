@@ -1,7 +1,20 @@
 <div class="content">
-  {% for item in content %}
+  <h3>Title of events</h3>
+  {% for item in content.titles %}
     <div>
       {{ item }}
+    </div>
+  {% endfor %}
+  <h3>Dates of events</h3>
+  {% for item in content.dates %}
+    <div>
+      {{ item }}
+    </div>
+  {% endfor %}
+  <h3>Yearly counts</h3>
+  {% for year, count in content.yearly_counts %}
+    <div>
+      {{ year }}: {{ count }}
     </div>
   {% endfor %}
 </div>
