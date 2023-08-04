@@ -82,16 +82,18 @@ final class MovieEntityForm extends EntityForm {
       '#required' => TRUE,
     ];
 
+    dd($this->entity->get('movie'));
+
     $form['movie'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Movie'),
       '#target_type' => 'node',
-      '#default_value' => $this->entity->get('movie') ? $this->entityManager->getStorage('node')->load($this->entity->get('movie')) : "",
+      '#tags' => TRUE,
+      '#default_value' => $this->entity->get('movie') ? $this->entityManager->getStorage('node')->load($this->entity->get('movie')[0]) : "",
       '#required' => TRUE,
       '#selection_settings' => [
         'target_bundles' => ['movie'],
       ],
-      // '#tags' => TRUE,
     ];
 
     return $form;
