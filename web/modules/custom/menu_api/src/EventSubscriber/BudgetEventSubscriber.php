@@ -2,10 +2,6 @@
 
 namespace Drupal\menu_api\EventSubscriber;
 
-use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
-use Drupal\Core\Config\ConfigCrudEvent;
-use Drupal\Core\Config\ConfigEvents;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\NodeInterface;
@@ -31,9 +27,6 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
-  protected $invalidator;
-
-  protected $cacheMenu;
 
   /**
    * Contructs the object of the class.
@@ -43,11 +36,9 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match
    *   Object of Route Match Interface to get the current route match.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, RouteMatchInterface $current_route_match, CacheTagsInvalidatorInterface $invalidator, CacheBackendInterface $cache_menu) {
+  public function __construct(ConfigFactoryInterface $config_factory, RouteMatchInterface $current_route_match) {
     $this->configFactory = $config_factory;
     $this->routeMatch = $current_route_match;
-    $this->invalidator = $invalidator;
-    $this->cacheMenu = $cache_menu;
   }
 
   /**
@@ -55,7 +46,6 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     $events[KernelEvents::VIEW][] = ['onResponse', 100];
-    $events[ConfigEvents::SAVE][] = ['onConfigSave', 110];
     return $events;
   }
 
@@ -91,25 +81,10 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
               'tags' => ['movie_budget', 'config:menu_api.settings'],
             ],
           ];
-          $this->cacheMenu->invalidateAll();
           $controller_result = $event->getControllerResult();
           $event->setControllerResult(array_merge($build, $controller_result));
         }
       }
-    }
-  }
-
-  /**
-   * Invalidates tag when config is saved.
-   *
-   * @param \Drupal\Core\Config\ConfigCrudEvent $event
-   *   The event to get the config data.
-   */
-  public function onConfigSave(ConfigCrudEvent $event) {
-    $config_name = $event->getConfig()->getName();
-    if ($config_name === 'menu_api.settings' && $event->isChanged('movie_budget')) {
-      $this->invalidator->invalidateTags(['movie_budget']);
-      $this->cacheMenu->invalidateAll();
     }
   }
 

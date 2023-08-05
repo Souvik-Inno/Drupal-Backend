@@ -82,8 +82,7 @@ final class MovieEntityForm extends EntityForm {
       '#required' => TRUE,
     ];
 
-    // dd($this->entity->get('movie'));
-
+    // dd($this->entity->get('movie'));.
     $form['movie'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Movie'),

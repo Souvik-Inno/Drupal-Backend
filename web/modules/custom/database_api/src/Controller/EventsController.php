@@ -4,7 +4,6 @@ namespace Drupal\database_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
-use Drupal\node\Entity\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -14,14 +13,14 @@ class EventsController extends ControllerBase {
 
   /**
    * Connects to the database server.
-   * 
+   *
    * @var \Drupal\Core\Database\Connection
    */
   protected $connection;
 
   /**
-   * Contructs an object of the class
-   * 
+   * Contructs an object of the class.
+   *
    * @param \Drupal\Core\Database\Connection $connection
    *   To set the connection to database.
    */
@@ -37,55 +36,67 @@ class EventsController extends ControllerBase {
       $container->get('database')
     );
   }
-  
+
   /**
    * Renders the dashboard to display listing of counts of events.
-   * 
+   *
    * @return array
    *   Renderable array to be displayed.
    */
   public function listing() {
-    $query = $this->connection->select('node', 'n');
-    $query->condition('n.type', 'events', '=')
-          ->fields('n', ['nid', 'type']);
-    $query->innerJoin('node__field_date', 'nfd', 'n.nid = nfd.entity_id');
-    $query->fields('nfd', ['field_date_value']);
-    $query->innerJoin('node_field_data', 'nd', 'n.nid = nd.nid');
-    $query->fields('nd', ['type', 'title']);
-    // $query->groupBy('nfd.field_date_value');
-    // $query->addExpression('COUNT(*)', 'count');
+    $query = $this->connection->select('node__field_date', 'nfd')
+      ->condition('nfd.bundle', 'events', '=')
+      ->fields('nfd', ['field_date_value', 'entity_id']);
+    $query->innerJoin('node__field_type', 'nft', 'nfd.entity_id = nft.entity_id');
+    $query->fields('nft', ['field_type_value', 'entity_id']);
     $result = $query->execute()->fetchAll();
-
-    $new_query = $this->connection->select('node__field_date', 'nfd')
-                  ->condition('nfd.bundle', 'events', '=')
-                  ->fields('nfd', ['field_date_value']);
-    $new_result = $new_query->execute()->fetchAll();
-    $data = [];
-    $titles = [];
-    $dates = [];
     $yearly_counts = [];
+    $quarterly_counts = [];
+    $type_counts = [];
     foreach ($result as $record) {
-      $title = $record->title;
-      $type = $record->type;
-      $date = $record->field_date_value;
-      $as_date = strtotime($date);
-      $year = date('Y', $as_date);
-      array_push($titles, $title);
-      array_push($dates, $date);
-      \Drupal::messenger()->addMessage($this->t('type: @type, nid: @nid, title: @title, date: @date, year: @year', 
-        ['@type' => $type, '@nid' => $record->nid, '@title' => $title, '@date' => $date, '@year' => $year]));
-    }
-    foreach ($new_result as $record) {
       $date = strtotime($record->field_date_value);
       $year = date('Y', $date);
-      $yearly_counts[$year]++;
+      $quarter = ceil(date('n', $date) / 3);
+      if (array_key_exists($year, $yearly_counts)) {
+        $yearly_counts[$year]++;
+      }
+      else {
+        $yearly_counts[$year] = 1;
+      }
+      $quarter_key = $year . '-Q' . $quarter;
+      switch ($quarter) {
+        case 1:
+          $quarter_key = "Jan to Apr " . $year;
+          break;
+
+        case 2:
+          $quarter_key = "May to Aug " . $year;
+          break;
+
+        case 3:
+          $quarter_key = "Sep to Dec " . $year;
+          break;
+
+        default:
+      }
+      if (array_key_exists($quarter_key, $quarterly_counts)) {
+        $quarterly_counts[$quarter_key]++;
+      }
+      else {
+        $quarterly_counts[$quarter_key] = 1;
+      }
+      if (array_key_exists($record->field_type_value, $type_counts)) {
+        $type_counts[$record->field_type_value]++;
+      }
+      else {
+        $type_counts[$record->field_type_value] = 1;
+      }
     }
     $data = [
-      "titles" => $titles,
-      "dates" => $dates,
       "yearly_counts" => $yearly_counts,
+      "quarterly_counts" => $quarterly_counts,
+      "type_counts" => $type_counts,
     ];
-    
     return [
       '#theme' => 'database_api',
       '#content' => $data,
