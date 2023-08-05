@@ -63,21 +63,25 @@ class EventsController extends ControllerBase {
       else {
         $yearly_counts[$year] = 1;
       }
-      $quarter_key = $year . '-Q' . $quarter;
       switch ($quarter) {
         case 1:
-          $quarter_key = "Jan to Apr " . $year;
+          $quarter_key = "Jan to Mar " . $year;
           break;
 
         case 2:
-          $quarter_key = "May to Aug " . $year;
+          $quarter_key = "Apr to June " . $year;
           break;
 
         case 3:
-          $quarter_key = "Sep to Dec " . $year;
+          $quarter_key = "July to Sep " . $year;
+          break;
+
+        case 4:
+          $quarter_key = "Oct to Dec " . $year;
           break;
 
         default:
+          $quarter_key = "Invalid";
       }
       if (array_key_exists($quarter_key, $quarterly_counts)) {
         $quarterly_counts[$quarter_key]++;
