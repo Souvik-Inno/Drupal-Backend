@@ -1,0 +1,25 @@
+uuid: 405001f6-1bd6-431f-8d79-be229e43822b
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_api
+    - system
+  theme:
+    - olivero
+id: olivero_welcome
+theme: olivero
+region: hero
+weight: 0
+provider: null
+plugin: block_api_welcome
+settings:
+  id: block_api_welcome
+  label: Welcome
+  label_display: visible
+  provider: block_api
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /custom-welcome-page
