@@ -11,10 +11,7 @@ use Symfony\Component\Routing\RouteCollection;
 class AccessCheck extends RouteSubscriberBase {
 
   /**
-   * Alters route and sets requirements.
-   *
-   * @param \Symfony\Component\Routing\RouteCollection $collection
-   *   The collection of routes to alter.
+   * {@inheritDoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
     if ($route = $collection->get('routing_system.content')) {

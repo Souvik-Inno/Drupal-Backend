@@ -2,17 +2,17 @@
 
 namespace Drupal\form_api\Form;
 
+use Drupal\Component\Utility\EmailValidatorInterface;
+use Drupal\Core\Ajax\AddCssCommand;
+use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\form_api\UserFormValidator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides user form for user information.
- *
- * @internal
  */
 class UserForm extends ConfigFormBase {
 
@@ -24,12 +24,11 @@ class UserForm extends ConfigFormBase {
   const FORM_API_CONFIG_PAGE = 'form_api_config_page:values';
 
   /**
-   * Form validator.
+   * Validates the email.
    *
-   * @var \Drupal\form_api\UserFormValidator
+   * @var \Drupal\Component\Utility\EmailValidatorInterface
    */
-  protected $formValidator;
-
+  protected $emailValidator;
   /**
    * Gets value from config.
    *
@@ -38,26 +37,26 @@ class UserForm extends ConfigFormBase {
   protected $configFactory;
 
   /**
+   * Contructs the object of the class.
+   *
+   * @param \Drupal\Component\Utility\EmailValidatorInterface $email_validator
+   *   The email validator.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Object of config factory to get and set values in form.
+   */
+  public function __construct(EmailValidatorInterface $email_validator, ConfigFactoryInterface $config_factory) {
+    $this->emailValidator = $email_validator;
+    $this->configFactory = $config_factory;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('form_api.user_form_validator'),
+      $container->get('email.validator'),
       $container->get('config.factory')
     );
-  }
-
-  /**
-   * Contructs the object of the class.
-   *
-   * @param \Drupal\form_api\UserFormValidator $validator
-   *   Object of Validator service class to validate form.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   Object of config factory to get and set values in form.
-   */
-  public function __construct(UserFormValidator $validator, ConfigFactoryInterface $configFactory) {
-    $this->formValidator = $validator;
-    $this->configFactory = $configFactory;
   }
 
   /**
@@ -68,24 +67,14 @@ class UserForm extends ConfigFormBase {
   }
 
   /**
-   * Gets editable config file name.
+   * {@inheritdoc}
    */
   public function getEditableConfigNames() {
     return ['form_api.settings'];
   }
 
   /**
-   * Form constructor.
-   *
-   * Display a tree of all the form elements of user form.
-   *
-   * @param array $form
-   *   An associative array containing the structure of the form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current state of the form.
-   *
-   * @return array
-   *   The form structure.
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state = NULL) {
     $config = $this->configFactory->get('form_api.settings');
@@ -96,10 +85,7 @@ class UserForm extends ConfigFormBase {
       '#description' => $this->t('Enter your full name'),
       '#required' => TRUE,
       '#default_value' => $config->get('full_name') ?? '',
-    ];
-    $form['full-name-result'] = [
-      '#type' => 'markup',
-      '#markup' => "<div id='full-name-result' class='red'></div>",
+      '#suffix' => "<div id='full-name-result' class='red'></div>",
     ];
     $form['phone_number'] = [
       '#type' => 'tel',
@@ -108,10 +94,7 @@ class UserForm extends ConfigFormBase {
       '#required' => TRUE,
       '#markup' => "<div id='phone-number-result'></div>",
       '#default_value' => $config->get('phone_number') ?? '',
-    ];
-    $form['phone-number-result'] = [
-      '#type' => 'markup',
-      '#markup' => "<div id='phone-number-result' class='red'></div>",
+      '#suffix' => "<div id='phone-number-result' class='red'></div>",
     ];
     $form['email'] = [
       '#type' => 'email',
@@ -120,10 +103,7 @@ class UserForm extends ConfigFormBase {
       '#markup' => "<div id='email-result'></div>",
       '#default_value' => $config->get('email') ?? '',
       '#required' => TRUE,
-    ];
-    $form['email-result'] = [
-      '#type' => 'markup',
-      '#markup' => "<div id='email-result' class='red'></div>",
+      '#suffix' => "<div id='email-result' class='red'></div>",
     ];
     $form['gender'] = [
       '#type' => 'radios',
@@ -136,6 +116,19 @@ class UserForm extends ConfigFormBase {
       ],
       '#default_value' => $config->get('gender'),
       '#required' => TRUE,
+      '#attributes' => [
+        'id' => 'gender',
+      ],
+    ];
+    $form['other_gender'] = [
+      '#type' => 'textfield',
+      '#size' => '40',
+      '#placeholder' => 'Enter your gender',
+      '#states' => [
+        'visible' => [
+          ':input[id="gender"]' => ['value' => 'other'],
+        ],
+      ],
     ];
     $form['actions'] = [
       '#type' => 'submit',
@@ -147,6 +140,7 @@ class UserForm extends ConfigFormBase {
           'message' => NULL,
         ],
       ],
+      '#suffix' => "<div id='submitted'></div>",
     ];
 
     return $form;
@@ -164,10 +158,10 @@ class UserForm extends ConfigFormBase {
    *   The AJAX response.
    */
   public function submitUsingAjax(array &$form, FormStateInterface $form_state) {
-    $result = $this->formValidator->validateForm($form_state);
-    $error_count = $this->formValidator->getErrorCount();
+    $error_array = $this->validateFormUsingAjax($form_state);
     $triggering_element = $form_state->getTriggeringElement();
-    if ($error_count == 0  && $triggering_element['#type'] === 'submit') {
+    $response = new AjaxResponse();
+    if (count($error_array) == 0  && $triggering_element['#type'] === 'submit') {
       $config = $this->configFactory()->getEditable('form_api.settings');
       $config->set('full_name', $form_state->getValue('full_name'));
       $config->set('phone_number', $form_state->getValue('phone_number'));
@@ -175,9 +169,63 @@ class UserForm extends ConfigFormBase {
       $config->set('gender', $form_state->getValue('gender'));
       $config->save();
       $message = $this->t('Thanks! For Submitting The Form.');
-      $result->addCommand(new HtmlCommand('.contact-form-result-message', $message));
+      $response->addCommand(new HtmlCommand('#submitted', $message));
     }
-    return $result;
+    else {
+      $css_string = '<style>.red{color:red;}</style>';
+      if (array_key_exists('full-name-result', $error_array)) {
+        $response->addCommand($error_array['full-name-result']);
+      }
+      if (array_key_exists('phone-number-result', $error_array)) {
+        $response->addCommand($error_array['phone-number-result']);
+      }
+      if (array_key_exists('email-result', $error_array)) {
+        $response->addCommand($error_array['email-result']);
+      }
+      $response->addCommand(new AddCssCommand($css_string));
+    }
+    return $response;
+  }
+
+  /**
+   * Validates the form and returns AJAX response.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return \Drupal\Core\Ajax\HtmlCommand[]
+   *   The array containing all error messages.
+   */
+  public function validateFormUsingAjax(FormStateInterface $form_state) {
+    $phone_number = $form_state->getValue('phone_number');
+    $email_value = $form_state->getValue('email');
+    $full_name = $form_state->getValue('full_name');
+    $email_validator = $this->emailValidator->isValid($email_value);
+    $config = $this->configFactory()->getEditable('form_api.settings');
+    $email_providers = $config->get('email_providers');
+    $at_pos = strpos($email_value, '@');
+    $dot_pos = strpos($email_value, '.', $at_pos + 1);
+    $provider = substr($email_value, $at_pos + 1, $dot_pos - $at_pos - 1);
+    if ($at_pos === FALSE || $dot_pos === FALSE) {
+      $provider = '';
+    }
+    $error_array = [];
+    if (!preg_match("/^[A-Z a-z]+$/", $full_name)) {
+      $error_array['full-name-result'] = new HtmlCommand('#full-name-result', $this->t('Name should be text only.'));
+    }
+    if (!preg_match('/^\+91\d{10}$/', $phone_number)) {
+      $error_array['phone-number-result'] = new HtmlCommand('#phone-number-result', $this->t('Only Indian phone numbers are allowed with 10 digits.'));
+    }
+    if (!$email_validator) {
+      $error_array['email-result'] = new HtmlCommand('#email-result', $this->t('Enter valid Email'));
+    }
+    elseif (!in_array($provider, $email_providers)) {
+      $error_array['email-result'] = new HtmlCommand('#email-result', $this->t('Email should be of a valid provider.'));
+    }
+    elseif (substr($email_value, -4) != ".com") {
+      $error_array['email-result'] = new HtmlCommand('#email-result', $this->t('Domain should be .com'));
+    }
+    return $error_array;
   }
 
   /**
