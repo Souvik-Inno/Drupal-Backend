@@ -1,0 +1,11 @@
+uuid: 94543a8b-998a-45ba-8c41-c9ceaa87d06f
+langcode: en
+status: true
+dependencies: {  }
+id: my_movie_entity_try
+label: 'my movie entity try'
+description: asdfasdf
+year: '2008'
+'@array':
+  -
+    target_id: '21'

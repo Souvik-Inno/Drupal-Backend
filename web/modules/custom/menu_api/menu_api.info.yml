@@ -1,0 +1,7 @@
+name: Menu API
+type: module
+description: Learning about menu api
+package: Custom module
+core_version_requirement: ^10
+dependencies:
+  - movie_entity:movie_entity

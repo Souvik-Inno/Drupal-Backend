@@ -1,0 +1,23 @@
+database_api.listing:
+  path: '/dashboard'
+  defaults:
+    _controller: \Drupal\database_api\Controller\EventsController::listing
+    _title: Events listing
+  requirements:
+    _permission: 'access content'
+
+database_api.taxonomyfield:
+  path: '/taxonomy-field'
+  defaults:
+    _form: \Drupal\database_api\Form\TaxonomyFieldForm
+    _title: Taxonomy Field Form
+  requirements:
+    _permission: access content
+
+database_api.autocomplete_taxonomy:
+  path: '/autocomplete_taxonomy'
+  defaults:
+    _controller: \Drupal\database_api\Controller\EventsController::autocompleteTaxonomy
+    _format: json
+  requirements:
+    _access: 'TRUE'

@@ -1,0 +1,7 @@
+menu_api.config_form:
+  path: '/admin/config/system/menu-api'
+  defaults:
+    _form: '\Drupal\menu_api\Form\MenuApiConfigForm'
+    _title: 'Menu API Configuration'
+  requirements:
+    _role: 'administrator+editor'

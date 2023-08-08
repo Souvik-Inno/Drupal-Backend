@@ -1,0 +1,9 @@
+uuid: 18e408be-1750-42b2-9c36-7213b3291dad
+langcode: en
+status: true
+dependencies: {  }
+id: try_203
+label: 'Try 203'
+description: 'Trying for full fields save'
+year: '2008'
+movie: '20'
