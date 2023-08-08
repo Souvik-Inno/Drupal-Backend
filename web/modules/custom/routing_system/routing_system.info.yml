@@ -1,0 +1,5 @@
+name: Routing System
+description: Routing system which uses dynamic routing
+package: Custom module
+type: module
+core_version_requirement: ^10
