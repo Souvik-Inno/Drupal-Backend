@@ -5,6 +5,8 @@ namespace Drupal\database_api\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Returns responses for database_api routes.
@@ -105,6 +107,33 @@ class EventsController extends ControllerBase {
       '#theme' => 'database_api',
       '#content' => $data,
     ];
+  }
+
+  /**
+   * Autocompletes the taxonomy ternm name for form.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request object to get the taxonomy term name from form.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The JSON response object.
+   */
+  public function autocompleteTaxonomy(Request $request) {
+    $term_name = $request->query->get('q');
+    $results = [];
+    if (!empty($term_name)) {
+      $query = $this->connection->select('taxonomy_term_field_data', 't')
+        ->condition('t.name', '%' . $term_name . '%', 'LIKE')
+        ->fields('t', ['name', 'vid'])
+        ->range(0, 10);
+      $query_result = $query->execute()->fetchAll();
+      if (!empty($query_result)) {
+        foreach ($query_result as $term) {
+          $results[] = $term->name;
+        }
+      }
+    }
+    return new JsonResponse($results);
   }
 
 }

@@ -1,0 +1,11 @@
+uuid: 2786fade-17a5-4772-890a-e900511d79e6
+langcode: en
+status: true
+dependencies: {  }
+id: new_movie_1
+label: 'new movie 1'
+description: dsfasdf
+year: '2008'
+'entity:node':
+  -
+    target_id: '19'
