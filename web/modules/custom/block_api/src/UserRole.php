@@ -27,7 +27,7 @@ class UserRole {
   }
 
   /**
-   * Gets the current user's display name.
+   * Gets the current user's role.
    *
    * @return \Drupal\user\Entity\Role
    *   The user's role.
@@ -44,8 +44,7 @@ class UserRole {
    *   The cache tag.
    */
   public function getUserCacheTags() {
-    $cacheTags = ['user:' . $this->currentUser->id()];
-    return $cacheTags;
+    return ['user:' . $this->currentUser->id()];
   }
 
 }
