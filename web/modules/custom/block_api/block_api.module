@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Block API module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function block_api_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#submit'][] = 'block_api_user_login_form_submit';
+}
+
+/**
+ * Custom submit handler for the login form.
+ */
+function block_api_user_login_form_submit($form, FormStateInterface $form_state) {
+  $url = Url::fromRoute('block_api.content');
+  $form_state->setRedirectUrl($url);
+}

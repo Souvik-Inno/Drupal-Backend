@@ -1,0 +1,4 @@
+services:
+  block_api.user_role:
+    class: Drupal\block_api\UserRole
+    arguments: ['@current_user']
