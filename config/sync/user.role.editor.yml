@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - node.type.article
-    - node.type.movie
     - node.type.page
   module:
     - movie_entity
@@ -19,12 +18,9 @@ permissions:
   - 'access content overview'
   - 'administer movie_entity'
   - 'create article content'
-  - 'create movie content'
   - 'create page content'
   - 'delete own article content'
-  - 'delete own movie content'
   - 'delete own page content'
   - 'edit own article content'
-  - 'edit own movie content'
   - 'edit own page content'
   - 'view own unpublished content'
