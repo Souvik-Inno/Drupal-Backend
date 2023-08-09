@@ -1,0 +1,22 @@
+uuid: ae78026d-36cb-4735-8855-4d90facc6e39
+langcode: en
+status: true
+dependencies:
+  theme:
+    - my_ginny
+_core:
+  default_config_hash: BCWhood0xXFQYqxFgL1spXdb9KeIuXH1YvTdjIEedDg
+id: my_ginny_secondary_local_tasks
+theme: my_ginny
+region: pre_content
+weight: 0
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Secondary tabs'
+  label_display: '0'
+  provider: core
+  primary: false
+  secondary: true
+visibility: {  }

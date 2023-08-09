@@ -1,9 +1,0 @@
-uuid: 19669833-963b-4d0a-b75e-a5fd8b3bc6bf
-langcode: en
-status: true
-dependencies: {  }
-id: try_full_spiderman
-label: 'TRy full spiderman'
-description: 'spiderman try'
-year: '2022'
-movie: '18'

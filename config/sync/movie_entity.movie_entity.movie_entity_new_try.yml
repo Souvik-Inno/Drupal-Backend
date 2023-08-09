@@ -1,9 +1,0 @@
-uuid: 7a413e24-7887-481a-8c24-59e044589772
-langcode: en
-status: true
-dependencies: {  }
-id: movie_entity_new_try
-label: 'movie entity new try'
-description: fsgsadasdc
-year: '2008'
-movie: '21'
