@@ -4,12 +4,10 @@ namespace Drupal\database_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Database\Schema;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 
 /**
  * Returns responses for database_api routes.
@@ -73,19 +71,19 @@ class EventsController extends ControllerBase {
           case 1:
             $quarter_key = "Jan to Mar " . $year;
             break;
-  
+
           case 2:
             $quarter_key = "Apr to June " . $year;
             break;
-  
+
           case 3:
             $quarter_key = "July to Sep " . $year;
             break;
-  
+
           case 4:
             $quarter_key = "Oct to Dec " . $year;
             break;
-  
+
           default:
             $quarter_key = "Invalid";
         }
