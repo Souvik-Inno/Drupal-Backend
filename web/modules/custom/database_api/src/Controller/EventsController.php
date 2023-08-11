@@ -4,9 +4,12 @@ namespace Drupal\database_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\Schema;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 
 /**
  * Returns responses for database_api routes.
@@ -42,71 +45,74 @@ class EventsController extends ControllerBase {
   /**
    * Renders the dashboard to display listing of counts of events.
    *
-   * @return array
-   *   Renderable array to be displayed.
+   * @return array|Response
+   *   Renderable array to be displayed if data exists.
    */
   public function listing() {
-    $query = $this->connection->select('node__field_date', 'nfd')
-      ->condition('nfd.bundle', 'events', '=')
-      ->fields('nfd', ['field_date_value', 'entity_id']);
-    $query->innerJoin('node__field_type', 'nft', 'nfd.entity_id = nft.entity_id');
-    $query->fields('nft', ['field_type_value', 'entity_id']);
-    $result = $query->execute()->fetchAll();
-    $yearly_counts = [];
-    $quarterly_counts = [];
-    $type_counts = [];
-    foreach ($result as $record) {
-      $date = strtotime($record->field_date_value);
-      $year = date('Y', $date);
-      $quarter = ceil(date('n', $date) / 3);
-      if (array_key_exists($year, $yearly_counts)) {
-        $yearly_counts[$year]++;
+    if ($this->connection->schema()->tableExists('node__field_date')) {
+      $query = $this->connection->select('node__field_date', 'nfd')
+        ->condition('nfd.bundle', 'events', '=')
+        ->fields('nfd', ['field_date_value', 'entity_id']);
+      $query->innerJoin('node__field_type', 'nft', 'nfd.entity_id = nft.entity_id');
+      $query->fields('nft', ['field_type_value', 'entity_id']);
+      $result = $query->execute()->fetchAll();
+      $yearly_counts = [];
+      $quarterly_counts = [];
+      $type_counts = [];
+      foreach ($result as $record) {
+        $date = strtotime($record->field_date_value);
+        $year = date('Y', $date);
+        $quarter = ceil(date('n', $date) / 3);
+        if (array_key_exists($year, $yearly_counts)) {
+          $yearly_counts[$year]++;
+        }
+        else {
+          $yearly_counts[$year] = 1;
+        }
+        switch ($quarter) {
+          case 1:
+            $quarter_key = "Jan to Mar " . $year;
+            break;
+  
+          case 2:
+            $quarter_key = "Apr to June " . $year;
+            break;
+  
+          case 3:
+            $quarter_key = "July to Sep " . $year;
+            break;
+  
+          case 4:
+            $quarter_key = "Oct to Dec " . $year;
+            break;
+  
+          default:
+            $quarter_key = "Invalid";
+        }
+        if (array_key_exists($quarter_key, $quarterly_counts)) {
+          $quarterly_counts[$quarter_key]++;
+        }
+        else {
+          $quarterly_counts[$quarter_key] = 1;
+        }
+        if (array_key_exists($record->field_type_value, $type_counts)) {
+          $type_counts[$record->field_type_value]++;
+        }
+        else {
+          $type_counts[$record->field_type_value] = 1;
+        }
       }
-      else {
-        $yearly_counts[$year] = 1;
-      }
-      switch ($quarter) {
-        case 1:
-          $quarter_key = "Jan to Mar " . $year;
-          break;
-
-        case 2:
-          $quarter_key = "Apr to June " . $year;
-          break;
-
-        case 3:
-          $quarter_key = "July to Sep " . $year;
-          break;
-
-        case 4:
-          $quarter_key = "Oct to Dec " . $year;
-          break;
-
-        default:
-          $quarter_key = "Invalid";
-      }
-      if (array_key_exists($quarter_key, $quarterly_counts)) {
-        $quarterly_counts[$quarter_key]++;
-      }
-      else {
-        $quarterly_counts[$quarter_key] = 1;
-      }
-      if (array_key_exists($record->field_type_value, $type_counts)) {
-        $type_counts[$record->field_type_value]++;
-      }
-      else {
-        $type_counts[$record->field_type_value] = 1;
-      }
+      $data = [
+        "yearly_counts" => $yearly_counts,
+        "quarterly_counts" => $quarterly_counts,
+        "type_counts" => $type_counts,
+      ];
+      return [
+        '#theme' => 'database_api',
+        '#content' => $data,
+      ];
     }
-    $data = [
-      "yearly_counts" => $yearly_counts,
-      "quarterly_counts" => $quarterly_counts,
-      "type_counts" => $type_counts,
-    ];
-    return [
-      '#theme' => 'database_api',
-      '#content' => $data,
-    ];
+    return new Response('No Data Available', 403);
   }
 
   /**

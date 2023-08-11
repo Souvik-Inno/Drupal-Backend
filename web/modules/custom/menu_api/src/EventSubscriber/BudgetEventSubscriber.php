@@ -78,7 +78,7 @@ class BudgetEventSubscriber implements EventSubscriberInterface {
             '#type' => 'markup',
             '#markup' => $output,
             '#cache' => [
-              'tags' => ['movie_budget', 'config:menu_api.settings'],
+              'tags' => $config->getCacheTags(),
             ],
           ];
           $controller_result = $event->getControllerResult();
