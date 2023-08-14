@@ -1,0 +1,22 @@
+name: My Bootstrap
+type: theme
+description: My custom bootstrap theme for website.
+package: Other
+core_version_requirement: ^10
+libraries:
+  - my_bootstrap/global-styling
+
+base theme: bootstrap
+regions:
+  navigation: 'Navigation'
+  navigation_collapsible: 'Navigation (Collapsible)'
+  header: 'Top Bar'
+  highlighted: 'Highlighted'
+  help: 'Help'
+  content: 'Content'
+  sidebar_first: 'Primary'
+  custom_region: 'Custom Region'
+  sidebar_second: 'Secondary'
+  footer: 'Footer'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'

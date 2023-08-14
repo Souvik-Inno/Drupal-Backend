@@ -1,0 +1,18 @@
+movie_entity.movie_entity.*:
+  type: config_entity
+  label: Movie Entity
+  mapping:
+    id:
+      type: string
+      label: ID
+    label:
+      type: label
+      label: Label
+    uuid:
+      type: string
+    description:
+      type: string
+    year:
+      type: number
+    movie:
+      type: string

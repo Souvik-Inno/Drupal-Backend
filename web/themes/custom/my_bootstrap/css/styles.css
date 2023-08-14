@@ -1,0 +1,13 @@
+.left-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  width: 30%;
+}
+
+.main-container .row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 5px;
+}

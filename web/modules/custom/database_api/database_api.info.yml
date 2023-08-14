@@ -1,0 +1,5 @@
+name: Database API
+type: module
+description: Learning about database api
+package: Custom module
+core_version_requirement: ^10
