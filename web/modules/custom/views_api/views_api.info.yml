@@ -1,0 +1,5 @@
+name: View API
+type: module
+description: Learning about View api
+package: Custom module
+core_version_requirement: ^10

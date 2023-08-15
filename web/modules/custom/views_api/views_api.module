@@ -1,0 +1,42 @@
+<?php
+
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function views_api_views_query_alter(ViewExecutable $view, $query) {
+  if ($view->id() === 'sort_view') {
+    $query->addOrderBy('node__field_date', 'field_date_value', 'DESC');
+  }
+}
+
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function view_api_explore_views_data_alter(array &$data) {
+  $data['taxonomy_index']['relationship_name'] = [
+    'title' => t('Taxonomy Index'),
+    'help' => t('Information about the taxonomy index'),
+    'relationship' => [
+      'base' => 'taxonomy_term_data',
+      'base field' => 'tid',
+      'field' => 'tid',
+      'id' => 'standard',
+      'label' => t('Taxonomy Index'),
+    ],
+  ];
+
+  $data['node_field_data']['relationship_2'] = [
+    'title' => t('users data'),
+    'help' => t('Information about the user'),
+    'relationship' => [
+      'base' => 'users',
+      'base field' => 'uid',
+      'field' => 'uid',
+      'id' => 'standard',
+      'label' => t('User data'),
+    ],
+  ];
+}
